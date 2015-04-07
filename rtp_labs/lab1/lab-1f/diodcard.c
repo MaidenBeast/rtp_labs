@@ -11,8 +11,10 @@ void shine(unsigned int lightIntensity) { //lightIntensity: percentage (from 0 t
 	shinePeriod = (lightIntensity < 100) ? 20000/100*lightIntensity : 20000;
 	
 	sysOutByte(0x180, 0xff); //turn on all LEDs of the first port
+	sysOutByte(0x181, 0xff); //turn on all LEDs of the second port
 	delayUsec(shinePeriod); //delay for the shinePeriod
 	sysOutByte(0x180, 0x00); //turn off all LEDs of the first port
+	sysOutByte(0x181, 0x00); //turn off all LEDs of the second port
 	delayUsec(20000 - shinePeriod); //delay for the remaining time until the 20000th ms
 }
 
@@ -32,15 +34,21 @@ void diodcard() {
 	sysOutByte(0x184, 0x01); //activate outputs
 	unsigned int counter = 0;
 	unsigned int intensity = 0;
-	
+	sysOutByte(0x182, 0xff); //enable reading switches status
 	
 	while (1) {
 		//shine(50); //50% of shine intensity <-- point 5 (without counter)
 		
-		//point 6 (with counter)
-		shine(intensity);
+		//point 5 (with counter)
+		/*shine(intensity);
 		counter++;
-		intensity = (counter)%100;
+		intensity = (counter)%100;*/
+		
+		//point 6 (regulated by switches)
+		char switches = sysInByte(0x182); //read the switches status
+		int turnedOnSwitches = chkTurnedOnSwitches(switches); //how many switches are turned on
+		intensity = turnedOnSwitches*100/8;
+		shine(intensity);
 	}
 }
 
