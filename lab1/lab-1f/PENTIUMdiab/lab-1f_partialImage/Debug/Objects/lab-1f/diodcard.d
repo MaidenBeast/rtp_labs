@@ -1,22 +1,24 @@
 lab-1f_partialImage/Debug/Objects/lab-1f/diodcard.o: \
   C:/windriver/workspace/lab-1f/diodcard.c \
-  C:/windriver/workspace/lab-1f/delayLib.h \
-  C:/windriver/vxworks-6.9/target/h/vxWorks.h \
-  C:/windriver/vxworks-6.9/target/h/vxWorksCommon.h \
-  C:/windriver/vxworks-6.9/target/h/types/vxCpu.h \
-  C:/windriver/vxworks-6.9/target/h/types/vxArch.h \
+  C:/windriver/vxworks-6.9/target/h/stdio.h \
+  C:/windriver/vxworks-6.9/target/h/types/vxANSI.h \
+  C:/windriver/vxworks-6.9/target/h/stdint.h \
   C:/windriver/vxworks-6.9/target/h/vsbConfig.h \
   C:/windriver/vxworks-6.9/target/lib/h/config/vsbConfig.h \
   C:/windriver/vxworks-6.9/target/lib/h/config/autoconf.h \
+  C:/windriver/vxworks-6.9/target/h/types/vxCpu.h \
+  C:/windriver/vxworks-6.9/target/h/types/vxArch.h \
   C:/windriver/vxworks-6.9/target/h/arch/i86/archI86.h \
   C:/windriver/vxworks-6.9/target/h/arch/i86/archI86Common.h \
   C:/windriver/vxworks-6.9/target/h/types/vxParams.h \
   C:/windriver/vxworks-6.9/target/h/types/vxTypesBase.h \
   C:/windriver/diab/5.9.1.0/include/diab/stddef.h \
   C:/windriver/diab/5.9.1.0/include/diab/xmacros.h \
+  C:/windriver/vxworks-6.9/target/h/errno.h \
+  C:/windriver/vxworks-6.9/target/h/private/handleLibP.h \
+  C:/windriver/vxworks-6.9/target/h/vxWorks.h \
+  C:/windriver/vxworks-6.9/target/h/vxWorksCommon.h \
   C:/windriver/vxworks-6.9/target/h/types/vxTypes.h \
-  C:/windriver/vxworks-6.9/target/h/types/vxANSI.h \
-  C:/windriver/vxworks-6.9/target/h/stdint.h \
   C:/windriver/vxworks-6.9/target/h/base/b_ssize_t.h \
   C:/windriver/vxworks-6.9/target/h/base/b_cpuset_t.h \
   C:/windriver/vxworks-6.9/target/h/base/b_phys_cpuset_t.h \
@@ -48,23 +50,26 @@ lab-1f_partialImage/Debug/Objects/lab-1f/diodcard.o: \
   C:/windriver/vxworks-6.9/target/h/types/vxWindCommon.h \
   C:/windriver/vxworks-6.9/target/h/tool/diab/toolMacros.h \
   C:/windriver/vxworks-6.9/target/h/tool/common/private/toolMacrosP.h \
-  C:/windriver/vxworks-6.9/target/h/version.h
+  C:/windriver/vxworks-6.9/target/h/version.h \
+  C:/windriver/diab/5.9.1.0/include/diab/stdarg.h \
+  C:/windriver/diab/5.9.1.0/include/diab/va_list.h \
+  C:/windriver/workspace/lab-1f/delayLib.h
 
-C:/windriver/workspace/lab-1f/delayLib.h:
+C:/windriver/vxworks-6.9/target/h/stdio.h:
 
-C:/windriver/vxworks-6.9/target/h/vxWorks.h:
+C:/windriver/vxworks-6.9/target/h/types/vxANSI.h:
 
-C:/windriver/vxworks-6.9/target/h/vxWorksCommon.h:
-
-C:/windriver/vxworks-6.9/target/h/types/vxCpu.h:
-
-C:/windriver/vxworks-6.9/target/h/types/vxArch.h:
+C:/windriver/vxworks-6.9/target/h/stdint.h:
 
 C:/windriver/vxworks-6.9/target/h/vsbConfig.h:
 
 C:/windriver/vxworks-6.9/target/lib/h/config/vsbConfig.h:
 
 C:/windriver/vxworks-6.9/target/lib/h/config/autoconf.h:
+
+C:/windriver/vxworks-6.9/target/h/types/vxCpu.h:
+
+C:/windriver/vxworks-6.9/target/h/types/vxArch.h:
 
 C:/windriver/vxworks-6.9/target/h/arch/i86/archI86.h:
 
@@ -78,11 +83,15 @@ C:/windriver/diab/5.9.1.0/include/diab/stddef.h:
 
 C:/windriver/diab/5.9.1.0/include/diab/xmacros.h:
 
+C:/windriver/vxworks-6.9/target/h/errno.h:
+
+C:/windriver/vxworks-6.9/target/h/private/handleLibP.h:
+
+C:/windriver/vxworks-6.9/target/h/vxWorks.h:
+
+C:/windriver/vxworks-6.9/target/h/vxWorksCommon.h:
+
 C:/windriver/vxworks-6.9/target/h/types/vxTypes.h:
-
-C:/windriver/vxworks-6.9/target/h/types/vxANSI.h:
-
-C:/windriver/vxworks-6.9/target/h/stdint.h:
 
 C:/windriver/vxworks-6.9/target/h/base/b_ssize_t.h:
 
@@ -147,4 +156,10 @@ C:/windriver/vxworks-6.9/target/h/tool/diab/toolMacros.h:
 C:/windriver/vxworks-6.9/target/h/tool/common/private/toolMacrosP.h:
 
 C:/windriver/vxworks-6.9/target/h/version.h:
+
+C:/windriver/diab/5.9.1.0/include/diab/stdarg.h:
+
+C:/windriver/diab/5.9.1.0/include/diab/va_list.h:
+
+C:/windriver/workspace/lab-1f/delayLib.h:
 

@@ -1,7 +1,9 @@
+#include <stdio.h>
 #include "delayLib.h"
 #include "vxWorks.h"
 
 int diodcardPid;
+int slowTaskPid;
 
 void shine(unsigned int lightIntensity) { //lightIntensity: percentage (from 0 to 99) 
 	unsigned int shinePeriod;
@@ -52,11 +54,27 @@ void diodcard() {
 	}
 }
 
-int start() {
-	diodcardPid = taskSpawn("diodcard", 200, 0, 1000, diodcard); //priority of 200
-	return diodcardPid;
+int slowThread() { //added from sample lab code
+  int i,j,cycles;
+  printf("slowThread!\n");
+  sysClkRateSet(100);
+  cycles=0;
+  while(1) {
+    for(i=0,j=0;i<150000;i++) { j += i; }
+    if((++cycles) % 100 == 0)
+    	printf("Tick\n");
+    taskDelay(1);
+  }
 }
 
-int stop() {
-	return taskDelete(diodcardPid);
+
+void start(int ticks) {
+	kernelTimeSlice(ticks);
+	diodcardPid = taskSpawn("diodcard", 200, 0, 1000, diodcard); 	//priority of 200
+	slowTaskPid = taskSpawn("slowTask", 200, 0, 1000, slowThread);	//priority of 200
+}
+
+void stop() {
+	taskDelete(diodcardPid);
+	taskDelete(slowTaskPid);
 }
