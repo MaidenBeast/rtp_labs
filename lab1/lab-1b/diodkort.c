@@ -15,31 +15,34 @@ void busyWait(int useconds) {
   } while((tv2.tv_sec-tv1.tv_sec)*1000000+(tv2.tv_usec-tv1.tv_usec) < useconds);
 }
 
-void shine(unsigned int lightIntensity) { //lightIntensity: percentage (from 0 to 99) 
+void shine(unsigned int lightIntensity) { /* lightIntensity: percentage (from 0 to 99) */
 	unsigned int shinePeriod;
 	
-	//	if the percent is greater than 100% --> set the shine period to 100%
-	//	(for avoid strange interval overflows) 
+	/*
+	 * if the percent is greater than 100% --> set the shine period to 100%
+	 * (for avoid strange interval overflows) 
+	 */
 	shinePeriod = (lightIntensity < 100) ? 20000/100*lightIntensity : 20000;
 	
-	outb(0xFF, 0x180);	//turn on all LEDs of the first port
-	outb(0XFF, 0x181);	//turn on all LEDs of the second port
-	busyWait(shinePeriod); //delay for the shinePeriod
-	outb(0x00, 0x180); //turn off all LEDs of the first port
-	outb(0x00, 0x181); //turn off all LEDs of the second port
-	busyWait(20000 - shinePeriod); //delay for the remaining time until the 20000th ms
+	outb(0xFF, 0x180);				/* turn on all LEDs of the first port 					*/
+	outb(0XFF, 0x181);				/* turn on all LEDs of the second port 					*/
+	busyWait(shinePeriod); 			/* delay for the shinePeriod 							*/
+	outb(0x00, 0x180); 				/* turn off all LEDs of the first port 					*/
+	outb(0x00, 0x181); 				/* turn off all LEDs of the second port 				*/
+	busyWait(20000 - shinePeriod); 	/* delay for the remaining time until the 20000th ms 	*/
 }
 
 int chkTurnedOnSwitches(char switches) {
-	int zero_values = 0;
+	int ones = 0;
 	
 	do {
-		if (switches & (unsigned int)0x80)
-			zero_values++;
+		if (switches & (unsigned int)0x80) /* if the first bit equals 1
+			ones++;
+		/* left bitwise. So the last bit becomes 0, and the second bit becomes the first one */
 		switches <<= 1;
-	} while (switches > (unsigned int)0);
+	} while (switches > (unsigned int)0); /* until all the bit become zero. */
 	
-	return zero_values;
+	return ones;
 }
 
 
@@ -60,7 +63,7 @@ int main() {
   outb(0xFF, 0x182); //enable reading switches status
 
   while(1) {
-	//sample-code (uncomment for test it)
+	/* sample-code (uncomment for test it) */
     // /* Turn on four of the LED's */
     // outb(0xCC,0x180);
     // sleep(1);
