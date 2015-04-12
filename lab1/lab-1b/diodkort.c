@@ -32,18 +32,18 @@ void shine(unsigned int lightIntensity) { /* lightIntensity: percentage (from 0 
 	busyWait(20000 - shinePeriod); 	/* delay for the remaining time until the 20000th ms 	*/
 }
 
-int chkTurnedOnSwitches(char switches) {
-	int ones = 0;
-	
-	do {
-		if (switches & (unsigned int)0x80) /* if the first bit equals 1
-			ones++;
-		/* left bitwise. So the last bit becomes 0, and the second bit becomes the first one */
-		switches <<= 1;
-	} while (switches > (unsigned int)0); /* until all the bit become zero. */
-	
-	return ones;
-}
+	int chkTurnedOnSwitches(char switches) {
+		int ones = 0;
+		
+		do {
+			if (switches & (unsigned int)0x80) /* if the first bit equals 1 */
+				ones++;
+			/* left bitwise. So the last bit becomes 0, and the second bit becomes the first one */
+			switches <<= 1;
+		} while (switches > (unsigned int)0); /* until all the bit become zero. */
+		
+		return ones;
+	}
 
 
 int main() {

@@ -49,6 +49,7 @@ void clockTest() {
     
     nextTime += 1/7.0;
     delay(nextTime - timenow());
+    //delta between previous and actual time
     deltaTime = timenow() - startTime - previousTime;
   }
 }
