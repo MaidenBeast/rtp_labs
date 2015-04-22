@@ -26,7 +26,7 @@ int chkTurnedOnSwitches(char switches) {
 	int ones = 0;
 	
 	do {
-		if (switches & (unsigned int)0x80) /* if the first bit equals 1
+		if (switches & (unsigned int)0x80) /* if the first bit equals 1 */
 			ones++;
 		/* left bitwise. So the last bit becomes 0, and the second bit becomes the first one */
 		switches <<= 1;
