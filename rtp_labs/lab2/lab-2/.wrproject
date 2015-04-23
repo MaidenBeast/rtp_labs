@@ -9752,11 +9752,6 @@
     <buildtargets>
         <buildtarget buildtool="Linker" name="lab-2" passed="false" targetname="lab-2">
             <contents>
-                <buildtargetreference name="/lab-2/lab-2_partialImage"/>
-            </contents>
-        </buildtarget>
-        <buildtarget buildtool="Partial Image Linker" name="lab-2_partialImage" passed="true" targetname="lab-2_partialImage">
-            <contents>
                 <folder name="/lab-2" recursive="true"/>
             </contents>
         </buildtarget>

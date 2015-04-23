@@ -36,7 +36,7 @@ MODE_DIR := NonDebug
 endif
 OBJ_DIR := .
 WS_ROOT_DIR := C:/windriver/workspace
-PRJ_ROOT_DIR := $(WS_ROOT_DIR)/lab-2
+PRJ_ROOT_DIR := //edunet/dfs/home17/ht14/felsah142/My\ Documents/rtp_labs/lab2/lab-2
 
 
 
@@ -85,8 +85,7 @@ endif
 
 
 #Project Targets
-PROJECT_TARGETS = lab-2/$(MODE_DIR)/lab-2.out \
-	 lab-2_partialImage/$(MODE_DIR)/lab-2_partialImage.o
+PROJECT_TARGETS = lab-2/$(MODE_DIR)/lab-2.out
 
 
 #Rules
@@ -125,7 +124,16 @@ lab-2/$(MODE_DIR)/% : LIBPATH =
 lab-2/$(MODE_DIR)/% : LIBS = 
 lab-2/$(MODE_DIR)/% : OBJ_DIR := lab-2/$(MODE_DIR)
 
-OBJECTS_lab-2 = lab-2_partialImage/$(MODE_DIR)/lab-2_partialImage.o
+lab-2/$(MODE_DIR)/Objects/lab-2/delayLib.o : $(PRJ_ROOT_DIR)/delayLib.c $(FORCE_FILE_BUILD)
+	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)dcc $(DEBUGFLAGS_C-Compiler) $(CC_ARCH_SPEC) -W:c:,-Xclib-optim-off -Xansi -Xlocal-data-area-static-only -Xsystem-headers-warn -Xc-new -Xdialect-c89  -ei1518,4177,4223,4301,4550,5409,1606 -ei4193,4826,4381,4237,1573,4007,4082,4177,4223,4260,4550,5361,5828 -ei1522,4092,4111,4144,4152,4167,4171,4174,4186,4188,4191,4192,4223,4231,4236,4284,4375,4494,4513,5152,5457 -Xforce-declarations   -Xmake-dependency=0xd $(IDE_DEFINES) $(DEFINES) $(ADDED_CFLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -o "$@" -c "$<"
+
+
+lab-2/$(MODE_DIR)/Objects/lab-2/led_screen.o : $(PRJ_ROOT_DIR)/led_screen.c $(FORCE_FILE_BUILD)
+	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)dcc $(DEBUGFLAGS_C-Compiler) $(CC_ARCH_SPEC) -W:c:,-Xclib-optim-off -Xansi -Xlocal-data-area-static-only -Xsystem-headers-warn -Xc-new -Xdialect-c89  -ei1518,4177,4223,4301,4550,5409,1606 -ei4193,4826,4381,4237,1573,4007,4082,4177,4223,4260,4550,5361,5828 -ei1522,4092,4111,4144,4152,4167,4171,4174,4186,4188,4191,4192,4223,4231,4236,4284,4375,4494,4513,5152,5457 -Xforce-declarations   -Xmake-dependency=0xd $(IDE_DEFINES) $(DEFINES) $(ADDED_CFLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -o "$@" -c "$<"
+
+
+OBJECTS_lab-2 = lab-2/$(MODE_DIR)/Objects/lab-2/delayLib.o \
+	 lab-2/$(MODE_DIR)/Objects/lab-2/led_screen.o
 
 ifeq ($(TARGET_JOBS),1)
 lab-2/$(MODE_DIR)/lab-2.out : $(OBJECTS_lab-2)
@@ -142,74 +150,13 @@ _clean :: lab-2/$(MODE_DIR)/lab-2_clean
 lab-2/$(MODE_DIR)/lab-2_clean : 
 	$(TRACE_FLAG)if [ -d "lab-2" ]; then cd "lab-2"; rm -rf $(MODE_DIR); fi
 
-
-# lab-2_partialImage
-ifeq ($(DEBUG_MODE),1)
-lab-2_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_C-Compiler = -g
-lab-2_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_C++-Compiler = -g
-lab-2_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Linker = -g
-lab-2_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Partial-Image-Linker = 
-lab-2_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Librarian = 
-lab-2_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Assembler = -g
-else
-lab-2_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_C-Compiler =  -XO -Xsize-opt  -Xalign-functions=4
-lab-2_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_C++-Compiler =  -XO -Xsize-opt  -Xalign-functions=4
-lab-2_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Linker =  -XO -Xsize-opt  -Xalign-functions=4
-lab-2_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Partial-Image-Linker = 
-lab-2_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Librarian = 
-lab-2_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Assembler =  -XO -Xsize-opt  -Xalign-functions=4
-endif
-lab-2_partialImage/$(MODE_DIR)/% : IDE_INCLUDES = -I$(WIND_BASE)/target/h -I$(WIND_BASE)/target/usr/h -I$(WIND_BASE)/target/h/wrn/coreip 
-lab-2_partialImage/$(MODE_DIR)/% : IDE_LIBRARIES = 
-lab-2_partialImage/$(MODE_DIR)/% : IDE_DEFINES = -DCPU=_VX_$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL -D_VSB_CONFIG_FILE=\"$(VSB_DIR)/h/config/vsbConfig.h\"   
-lab-2_partialImage/$(MODE_DIR)/% : PROJECT_TYPE = DKM
-lab-2_partialImage/$(MODE_DIR)/% : DEFINES = 
-lab-2_partialImage/$(MODE_DIR)/% : EXPAND_DBG = 0
-lab-2_partialImage/$(MODE_DIR)/% : VX_CPU_FAMILY = pentium
-lab-2_partialImage/$(MODE_DIR)/% : CPU = PENTIUM
-lab-2_partialImage/$(MODE_DIR)/% : TOOL_FAMILY = diab
-lab-2_partialImage/$(MODE_DIR)/% : TOOL = diab
-lab-2_partialImage/$(MODE_DIR)/% : TOOL_PATH = 
-lab-2_partialImage/$(MODE_DIR)/% : CC_ARCH_SPEC = -tPENTIUMLH:vxworks69
-lab-2_partialImage/$(MODE_DIR)/% : VSB_DIR = $(WIND_BASE)/target/lib
-lab-2_partialImage/$(MODE_DIR)/% : VSB_CONFIG_FILE = $(VSB_DIR)/h/config/vsbConfig.h
-lab-2_partialImage/$(MODE_DIR)/% : LIBPATH = 
-lab-2_partialImage/$(MODE_DIR)/% : LIBS = 
-lab-2_partialImage/$(MODE_DIR)/% : OBJ_DIR := lab-2_partialImage/$(MODE_DIR)
-
-lab-2_partialImage/$(MODE_DIR)/Objects/lab-2/delayLib.o : $(PRJ_ROOT_DIR)/delayLib.c $(FORCE_FILE_BUILD)
-	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)dcc $(DEBUGFLAGS_C-Compiler) $(CC_ARCH_SPEC) -W:c:,-Xclib-optim-off -Xansi -Xlocal-data-area-static-only -Xsystem-headers-warn -Xc-new -Xdialect-c89  -ei1518,4177,4223,4301,4550,5409,1606 -ei4193,4826,4381,4237,1573,4007,4082,4177,4223,4260,4550,5361,5828 -ei1522,4092,4111,4144,4152,4167,4171,4174,4186,4188,4191,4192,4223,4231,4236,4284,4375,4494,4513,5152,5457 -Xforce-declarations   -Xmake-dependency=0xd $(IDE_DEFINES) $(DEFINES) $(ADDED_CFLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -o "$@" -c "$<"
-
-
-lab-2_partialImage/$(MODE_DIR)/Objects/lab-2/led_screen.o : $(PRJ_ROOT_DIR)/led_screen.c $(FORCE_FILE_BUILD)
-	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)dcc $(DEBUGFLAGS_C-Compiler) $(CC_ARCH_SPEC) -W:c:,-Xclib-optim-off -Xansi -Xlocal-data-area-static-only -Xsystem-headers-warn -Xc-new -Xdialect-c89  -ei1518,4177,4223,4301,4550,5409,1606 -ei4193,4826,4381,4237,1573,4007,4082,4177,4223,4260,4550,5361,5828 -ei1522,4092,4111,4144,4152,4167,4171,4174,4186,4188,4191,4192,4223,4231,4236,4284,4375,4494,4513,5152,5457 -Xforce-declarations   -Xmake-dependency=0xd $(IDE_DEFINES) $(DEFINES) $(ADDED_CFLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -o "$@" -c "$<"
-
-
-OBJECTS_lab-2_partialImage = lab-2_partialImage/$(MODE_DIR)/Objects/lab-2/delayLib.o \
-	 lab-2_partialImage/$(MODE_DIR)/Objects/lab-2/led_screen.o
-
-ifeq ($(TARGET_JOBS),1)
-lab-2_partialImage/$(MODE_DIR)/lab-2_partialImage.o : $(OBJECTS_lab-2_partialImage)
-	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)dld -tPENTIUMLH:vxworks69 -X -r5  -o "$@" $(OBJECTS_lab-2_partialImage) $(ADDED_OBJECTS) $(IDE_LIBRARIES) $(LIBPATH) $(LIBS) $(ADDED_LIBPATH) $(ADDED_LIBS) && if [ "$(EXPAND_DBG)" = "1" ]; then plink "$@";fi
-
-else
-lab-2_partialImage/$(MODE_DIR)/lab-2_partialImage.o : lab-2_partialImage/$(MODE_DIR)/lab-2_partialImage.o_jobs
-
-endif
-lab-2_partialImage/$(MODE_DIR)/lab-2_partialImage_compile_file : $(FILE) ;
-
-_clean :: lab-2_partialImage/$(MODE_DIR)/lab-2_partialImage_clean
-
-lab-2_partialImage/$(MODE_DIR)/lab-2_partialImage_clean : 
-	$(TRACE_FLAG)if [ -d "lab-2_partialImage" ]; then cd "lab-2_partialImage"; rm -rf $(MODE_DIR); fi
-
 force : 
 
 TARGET_JOBS_RULE?=echo update makefile template
 %_jobs : 
 	$(TRACE_FLAG)$(TARGET_JOBS_RULE)
 
-DEP_FILES := lab-2_partialImage/$(MODE_DIR)/Objects/lab-2/delayLib.d lab-2_partialImage/$(MODE_DIR)/Objects/lab-2/led_screen.d
+DEP_FILES := lab-2/$(MODE_DIR)/Objects/lab-2/delayLib.d lab-2/$(MODE_DIR)/Objects/lab-2/led_screen.d
 -include $(DEP_FILES)
 
 
