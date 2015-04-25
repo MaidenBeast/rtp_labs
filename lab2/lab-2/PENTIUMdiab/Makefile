@@ -36,7 +36,7 @@ MODE_DIR := NonDebug
 endif
 OBJ_DIR := .
 WS_ROOT_DIR := C:/windriver/workspace
-PRJ_ROOT_DIR := //edunet/dfs/home17/ht14/felsah142/My\ Documents/rtp_labs/lab2/lab-2
+PRJ_ROOT_DIR := $(WS_ROOT_DIR)/lab-2
 
 
 
@@ -128,12 +128,17 @@ lab-2/$(MODE_DIR)/Objects/lab-2/delayLib.o : $(PRJ_ROOT_DIR)/delayLib.c $(FORCE_
 	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)dcc $(DEBUGFLAGS_C-Compiler) $(CC_ARCH_SPEC) -W:c:,-Xclib-optim-off -Xansi -Xlocal-data-area-static-only -Xsystem-headers-warn -Xc-new -Xdialect-c89  -ei1518,4177,4223,4301,4550,5409,1606 -ei4193,4826,4381,4237,1573,4007,4082,4177,4223,4260,4550,5361,5828 -ei1522,4092,4111,4144,4152,4167,4171,4174,4186,4188,4191,4192,4223,4231,4236,4284,4375,4494,4513,5152,5457 -Xforce-declarations   -Xmake-dependency=0xd $(IDE_DEFINES) $(DEFINES) $(ADDED_CFLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -o "$@" -c "$<"
 
 
-lab-2/$(MODE_DIR)/Objects/lab-2/led_screen.o : $(PRJ_ROOT_DIR)/led_screen.c $(FORCE_FILE_BUILD)
+lab-2/$(MODE_DIR)/Objects/lab-2/exercise2.o : $(PRJ_ROOT_DIR)/exercise2.c $(FORCE_FILE_BUILD)
+	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)dcc $(DEBUGFLAGS_C-Compiler) $(CC_ARCH_SPEC) -W:c:,-Xclib-optim-off -Xansi -Xlocal-data-area-static-only -Xsystem-headers-warn -Xc-new -Xdialect-c89  -ei1518,4177,4223,4301,4550,5409,1606 -ei4193,4826,4381,4237,1573,4007,4082,4177,4223,4260,4550,5361,5828 -ei1522,4092,4111,4144,4152,4167,4171,4174,4186,4188,4191,4192,4223,4231,4236,4284,4375,4494,4513,5152,5457 -Xforce-declarations   -Xmake-dependency=0xd $(IDE_DEFINES) $(DEFINES) $(ADDED_CFLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -o "$@" -c "$<"
+
+
+lab-2/$(MODE_DIR)/Objects/lab-2/exercise3.o : $(PRJ_ROOT_DIR)/exercise3.c $(FORCE_FILE_BUILD)
 	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)dcc $(DEBUGFLAGS_C-Compiler) $(CC_ARCH_SPEC) -W:c:,-Xclib-optim-off -Xansi -Xlocal-data-area-static-only -Xsystem-headers-warn -Xc-new -Xdialect-c89  -ei1518,4177,4223,4301,4550,5409,1606 -ei4193,4826,4381,4237,1573,4007,4082,4177,4223,4260,4550,5361,5828 -ei1522,4092,4111,4144,4152,4167,4171,4174,4186,4188,4191,4192,4223,4231,4236,4284,4375,4494,4513,5152,5457 -Xforce-declarations   -Xmake-dependency=0xd $(IDE_DEFINES) $(DEFINES) $(ADDED_CFLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -o "$@" -c "$<"
 
 
 OBJECTS_lab-2 = lab-2/$(MODE_DIR)/Objects/lab-2/delayLib.o \
-	 lab-2/$(MODE_DIR)/Objects/lab-2/led_screen.o
+	 lab-2/$(MODE_DIR)/Objects/lab-2/exercise2.o \
+	 lab-2/$(MODE_DIR)/Objects/lab-2/exercise3.o
 
 ifeq ($(TARGET_JOBS),1)
 lab-2/$(MODE_DIR)/lab-2.out : $(OBJECTS_lab-2)
@@ -156,7 +161,7 @@ TARGET_JOBS_RULE?=echo update makefile template
 %_jobs : 
 	$(TRACE_FLAG)$(TARGET_JOBS_RULE)
 
-DEP_FILES := lab-2/$(MODE_DIR)/Objects/lab-2/delayLib.d lab-2/$(MODE_DIR)/Objects/lab-2/led_screen.d
+DEP_FILES := lab-2/$(MODE_DIR)/Objects/lab-2/delayLib.d lab-2/$(MODE_DIR)/Objects/lab-2/exercise2.d lab-2/$(MODE_DIR)/Objects/lab-2/exercise3.d
 -include $(DEP_FILES)
 
 
