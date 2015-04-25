@@ -1,5 +1,5 @@
-lab-2/Debug/Objects/lab-2/exercise3.o: \
-  C:/windriver/workspace/lab-2/exercise3.c \
+lab-2/Debug/Objects/lab-2/exercise5.o: \
+  C:/windriver/workspace/lab-2/exercise5.c \
   C:/windriver/vxworks-6.9/target/h/stdio.h \
   C:/windriver/vxworks-6.9/target/h/types/vxANSI.h \
   C:/windriver/vxworks-6.9/target/h/stdint.h \
