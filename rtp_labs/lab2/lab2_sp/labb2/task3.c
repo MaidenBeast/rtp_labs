@@ -143,6 +143,6 @@ void animStart()
 	sysClkRateSet(1000);
 	sysOutByte(0x184, 1);
 	semId = semBCreate(0, SEM_FULL);
-	t3id = taskSpawn("task3", 101, 0, 4000, task3);
 	animid = taskSpawn("anim", 100, 0, 4000, drawThread);
+	t3id = taskSpawn("task3", 101, 0, 4000, task3);
 }
