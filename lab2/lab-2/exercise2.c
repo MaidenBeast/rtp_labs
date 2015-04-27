@@ -96,7 +96,7 @@ void led_screenEx2() {
 
 			//sysOutByte(0x180, 0x00);
 
-			delayUsec(10);
+			delayUsec(100);
 
 		}
 	}
