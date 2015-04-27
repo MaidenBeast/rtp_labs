@@ -29,7 +29,6 @@ int pixels[16][8][3];
 void led_screenEx4() {
 	int i;
 	int j;
-	int enableLEDs = 0;
 
 	sysOutByte(0x184, 0x01); //enable writing bytes to LED card
 	sysOutByte(0x180, 0xFF); //turns off red LEDs
@@ -42,11 +41,7 @@ void led_screenEx4() {
 		//int j;
 
 		if (checkTrigger()) {
-			enableLEDs = 1;
 			delayMsec(1);
-		}
-
-		if (enableLEDs) {
 			for (i = 0; i< 16; i++) {
 				char r_led = 0xFF;
 				char g_led = 0xFF;
@@ -76,19 +71,20 @@ void led_screenEx4() {
 				sysOutByte(0x182, b_led);
 				delayUsec(128);
 			}
+			sysOutByte(0x180, 0xFF);
+			sysOutByte(0x181, 0xFF);
+			sysOutByte(0x182, 0xFF);
 		}
 
-		sysOutByte(0x180, 0xFF);
-		sysOutByte(0x181, 0xFF);
-		sysOutByte(0x182, 0xFF);
-		enableLEDs = 0;
 	}
 
 }
 
 void startEx4() {
+	sysClkRateSet(5000);
+
 	int i;
-	
+
 	for(i = 0; i < 16; i++)
 	{
 		pixels[i][0][0] = 1; //all reds on the first row

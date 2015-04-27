@@ -49,7 +49,6 @@ void led_screenEx3() {
 
 	int i;
 	int j;
-	int enableLEDs = 0;
 
 	/*for (i = 0; i < 8; i++) {
 		for (j = 0; j<3; j++) {
@@ -66,13 +65,9 @@ void led_screenEx3() {
 	while (1) {
 		//int i;
 		//int j;
-
+		
 		if (checkTrigger()) {
-			enableLEDs = 1;
 			delayMsec(1);
-		}
-
-		if (enableLEDs) {
 			unsigned int rgb_leds_temp[8][3];
 
 			for (i = 0; i < 8; i++) {
@@ -109,26 +104,27 @@ void led_screenEx3() {
 				}
 
 				/*sysOutByte(0x180, r_led);
-				sysOutByte(0x181, g_led);
-				sysOutByte(0x182, b_led);*/
-				
+							sysOutByte(0x181, g_led);
+							sysOutByte(0x182, b_led);*/
+
 				sysOutByte(0x180, 0x00); //red test
 
 				//delayMsec(10);
-				
+
 			}
 			delayMsec(2);
+			sysOutByte(0x180, 0xFF);
+			sysOutByte(0x181, 0xFF);
+			sysOutByte(0x182, 0xFF);
 		}
 
-		sysOutByte(0x180, 0xFF);
-		sysOutByte(0x181, 0xFF);
-		sysOutByte(0x182, 0xFF);
-		enableLEDs = 0;
 	}
 
 }
 
 void startEx3() {
+	sysClkRateSet(5000);
+
 	led_screen_pid = taskSpawn("led_screen", 200, 0, 1000, led_screenEx3);
 	//get_input_pid = taskSpawn("get_input", 200, 0, 1000, get_input);
 
@@ -150,7 +146,7 @@ void startEx3() {
 void stopEx3() {
 	taskDelete(led_screen_pid);
 	//taskDelete(get_input_pid);
-	
+
 	sysOutByte(0x180, 0xFF);
 	sysOutByte(0x181, 0xFF);
 	sysOutByte(0x182, 0xFF);

@@ -3,8 +3,11 @@
 #include "vxWorks.h"
 #include "common.h"
 
+void drawThread();
+
 int led_screen_pid;
 int get_input_pid;
+int draw_thread_pid;
 
 int pixels[16][8][3];
 
@@ -26,7 +29,7 @@ int pixels[16][8][3];
 
 }*/
 
-void led_screenEx5() {
+void led_screenEx6() {
 	int i;
 	int j;
 	int k;
@@ -142,11 +145,13 @@ void led_screenEx5() {
 
 }
 
-void startEx5() {
+void startEx6() {
 	sysClkRateSet(5000);
 
-	led_screen_pid = taskSpawn("led_screen", 200, 0, 1000, led_screenEx5);
+	draw_thread_pid = taskSpawn("draw_thread", 200, 0, 4000, drawThread);
+	led_screen_pid = taskSpawn("led_screen", 201, 0, 1000, led_screenEx6);
 	//get_input_pid = taskSpawn("get_input", 200, 0, 1000, get_input);
+	
 
 	/*printf("get_input\n");
 	unsigned int led_no;
@@ -163,9 +168,10 @@ void startEx5() {
 
 }
 
-void stopEx5() {
+void stopEx6() {
 	taskDelete(led_screen_pid);
 	//taskDelete(get_input_pid);
+	taskDelete(draw_thread_pid);
 
 	sysOutByte(0x180, 0xFF);
 	sysOutByte(0x181, 0xFF);
