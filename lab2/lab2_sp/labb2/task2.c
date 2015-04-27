@@ -79,7 +79,7 @@ void task2()
 			sysOutByte(0x182, blue);
 			
 			//sleep
-			delayUsec(80);
+			delayUsec(78);
 			
 		}
 	}	
@@ -101,6 +101,9 @@ void task2Start()	//start task 2
 		leds[4][i] = 50;
 		leds[5][i] = 0;
 	}
+	leds[6][0] = 255;
+	leds[7][1] = 255;
+	
 	semGive(semId);
 	
 	

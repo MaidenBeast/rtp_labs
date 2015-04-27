@@ -54,13 +54,16 @@ void drawIt(int offset,int flip) {
 
 void drawThread() {
   int pos=0,dir=1;
-  for(;;) {
-    /* Add a delay here so that this function is only run twice per second */
-    taskDelay(500);
-
+  for(;;)
+  {	
+	/* Add a delay here so that this function is only run twice per second */
+	taskDelay(500);
+	      
     pos = pos + dir;
     drawIt(pos,dir==1?1:0);
-    if(pos>=7) dir=-1;
-    else if(pos<=0) dir=1;
+    if(pos>=7)
+    	dir=-1;
+    else if(pos<=0)
+    	dir=1;       
   }
 }
