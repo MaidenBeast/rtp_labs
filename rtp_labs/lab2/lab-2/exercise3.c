@@ -65,8 +65,8 @@ void led_screenEx3() {
 	while (1) {
 		//int i;
 		//int j;
-		
-		if (checkTrigger()) {
+
+		if (checkTrigger()) { //if a pulse if detected from the reflex detector
 			delayMsec(1);
 			unsigned int rgb_leds_temp[8][3];
 
@@ -76,36 +76,44 @@ void led_screenEx3() {
 				}
 			}
 
-			for (i = 0; i < 256; i++) {
+			for (i = 0; i < 256; i++) { //for each time step (so until the 256th one)
+				//default behaviour: all the LEDs turned off
 				char r_led = 0xFF;
 				char g_led = 0xFF;
 				char b_led = 0xFF;
 
-				for (j = 0; j<8; j++) {
+				for (j = 0; j<8; j++) { //for each LED
 
 					//red
-					if (rgb_leds_temp[j][0]>0) {
-						r_led &= ~(0x80 >> j);
-						rgb_leds_temp[j][0]--;
+					if (rgb_leds_temp[j][0]>0) { 	//if the RED value is still "on"
+						//shift the first ONE bit to the right to j positions, i.e. is selecting the j-th LED
+						//then the j-th bit of r_led byte is turned on (i.e. is set to ZERO)
+						r_led &= ~(0x80 >> j);		
+						rgb_leds_temp[j][0]--;		//decrement the RED value
 					}
 
 					//green
-					if (rgb_leds_temp[j][1]>0) {
+					if (rgb_leds_temp[j][1]>0) {	//if the GREEN value is still "on"
+						//shift the first ONE bit to the right to j positions, i.e. is selecting the j-th LED
+						//then the j-th bit of r_led byte is turned on (i.e. is set to ZERO)
 						g_led &= ~(0x80 >> j);
-						rgb_leds_temp[j][1]--;
+						rgb_leds_temp[j][1]--;		//decrement the GREEN value
 					}
 
 					//blue
-					if (rgb_leds_temp[j][2]>0) {
+					if (rgb_leds_temp[j][2]>0) {	//if the BLUE value is still "on"
+						//shift the first ONE bit to the right to j positions, i.e. is selecting the j-th LED
+						//then the j-th bit of r_led byte is turned on (i.e. is set to ZERO)
 						b_led &= ~(0x80 >> j);
-						rgb_leds_temp[j][2]--;
+						rgb_leds_temp[j][2]--;		//decrement the BLUE value
 					}
 
 				}
 
+				//write to the LED card
 				/*sysOutByte(0x180, r_led);
-							sysOutByte(0x181, g_led);
-							sysOutByte(0x182, b_led);*/
+				sysOutByte(0x181, g_led);
+				sysOutByte(0x182, b_led);*/
 
 				sysOutByte(0x180, 0x00); //red test
 
