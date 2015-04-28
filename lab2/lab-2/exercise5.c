@@ -1,12 +1,15 @@
 #include <stdio.h>
+#include <math.h>
 #include "delayLib.h"
 #include "vxWorks.h"
 #include "common.h"
 
+#define RGB_LEVELS 8
+
 int led_screen_pid;
 int get_input_pid;
 
-int pixels[16][8][3];
+int pixels[16][8][3]; //3D matrix containing the RGB values of the "emulated" LED screen
 
 //unsigned int rgb_leds[8][3];
 
@@ -69,29 +72,25 @@ void led_screenEx5() {
 		//int i;
 		//int j;
 
-		if (checkTrigger()) {
+		if (checkTrigger()) { //if a pulse if detected from the reflex detector
 			delayMsec(1);
-			for (i = 0; i< 16; i++) {
+			for (i = 0; i< 16; i++) {	//for each column
 
 				unsigned int rgb_leds_temp[8][3];
 
 				for (j = 0; j < 8; j++) {
 					for (k = 0; k<3; k++) {
-						rgb_leds_temp[j][k] = pixels[i][j][k] >> 5;
+						rgb_leds_temp[j][k] = pixels[i][j][k] >> (int)log2(256/RGB_LEVELS); //quantize the RGB values to RGB_LEVELS
 					}
 				}
 
-				for (j = 0; j < 8; j++) {
-
+				for (j = 0; j < RGB_LEVELS; j++) {	//for each RGB level (0-31, 32-64,..., 224-255)
+					//default behaviour: all the LEDs turned off
 					char r_led = 0xFF;
 					char g_led = 0xFF;
 					char b_led = 0xFF;
 
-					for (k = 0; k < 8; k++) {
-						/*char r_temp = (char)(pixels[i][k][0] >> 5)-j;
-						char g_temp = (char)(pixels[i][k][1] >> 5)-j;
-						char b_temp = (char)(pixels[i][k][2] >> 5)-j;*/
-
+					for (k = 0; k < 8; k++) {	//for each row
 						/*//red
 						if (r_temp <= j) {
 							r_led &= ~(0x80 >> k);
@@ -108,21 +107,27 @@ void led_screenEx5() {
 						}*/
 
 						//red
-						if (rgb_leds_temp[k][0]>0) {
-							r_led &= ~(0x80 >> k);
-							rgb_leds_temp[k][0]--;
+						if (rgb_leds_temp[j][0]>0) { 	//if the RED value is still "on"
+							//shift the first ONE bit to the right to j positions, i.e. is selecting the j-th LED
+							//then the j-th bit of r_led byte is turned on (i.e. is set to ZERO)
+							r_led &= ~(0x80 >> j);		
+							rgb_leds_temp[j][0]--;		//decrement the RED value
 						}
 
 						//green
-						if (rgb_leds_temp[k][1]>0) {
-							g_led &= ~(0x80 >> k);
-							rgb_leds_temp[k][1]--;
+						if (rgb_leds_temp[j][1]>0) {	//if the GREEN value is still "on"
+							//shift the first ONE bit to the right to j positions, i.e. is selecting the j-th LED
+							//then the j-th bit of r_led byte is turned on (i.e. is set to ZERO)
+							g_led &= ~(0x80 >> j);
+							rgb_leds_temp[j][1]--;		//decrement the GREEN value
 						}
 
 						//blue
-						if (rgb_leds_temp[k][2]>0) {
-							b_led &= ~(0x80 >> k);
-							rgb_leds_temp[k][2]--;
+						if (rgb_leds_temp[j][2]>0) {	//if the BLUE value is still "on"
+							//shift the first ONE bit to the right to j positions, i.e. is selecting the j-th LED
+							//then the j-th bit of r_led byte is turned on (i.e. is set to ZERO)
+							b_led &= ~(0x80 >> j);
+							rgb_leds_temp[j][2]--;		//decrement the BLUE value
 						}
 					}
 
@@ -130,7 +135,7 @@ void led_screenEx5() {
 					sysOutByte(0x181, g_led);
 					sysOutByte(0x182, b_led);
 
-					delayUsec(128/8);
+					delayUsec(128/RGB_LEVELS); //delay for 128us/number of levels
 
 				}
 			}

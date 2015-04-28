@@ -53,6 +53,7 @@ lab-2/Debug/Objects/lab-2/exercise5.o: \
   C:/windriver/vxworks-6.9/target/h/version.h \
   C:/windriver/diab/5.9.1.0/include/diab/stdarg.h \
   C:/windriver/diab/5.9.1.0/include/diab/va_list.h \
+  C:/windriver/vxworks-6.9/target/h/math.h \
   C:/windriver/workspace/lab-2/delayLib.h \
   C:/windriver/workspace/lab-2/common.h
 
@@ -161,6 +162,8 @@ C:/windriver/vxworks-6.9/target/h/version.h:
 C:/windriver/diab/5.9.1.0/include/diab/stdarg.h:
 
 C:/windriver/diab/5.9.1.0/include/diab/va_list.h:
+
+C:/windriver/vxworks-6.9/target/h/math.h:
 
 C:/windriver/workspace/lab-2/delayLib.h:
 

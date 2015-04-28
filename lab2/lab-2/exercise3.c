@@ -121,6 +121,8 @@ void led_screenEx3() {
 
 			}
 			delayMsec(2);
+			
+			//turning off LEDs
 			sysOutByte(0x180, 0xFF);
 			sysOutByte(0x181, 0xFF);
 			sysOutByte(0x182, 0xFF);

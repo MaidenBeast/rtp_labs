@@ -6,7 +6,7 @@
 int led_screen_pid;
 int get_input_pid;
 
-int pixels[16][8][3];
+int pixels[16][8][3]; //3D matrix containing values between 0 and 1, meaning "turn on/off the LED"
 
 //unsigned int rgb_leds[8][3];
 
@@ -40,27 +40,34 @@ void led_screenEx4() {
 		//int i;
 		//int j;
 
-		if (checkTrigger()) {
+		if (checkTrigger()) { //if a pulse if detected from the reflex detector
 			delayMsec(1);
-			for (i = 0; i< 16; i++) {
+			for (i = 0; i< 16; i++) { //for each time step on the 128us time interval (so until the 16th one)
+				//default behaviour: all the LEDs turned off
 				char r_led = 0xFF;
 				char g_led = 0xFF;
 				char b_led = 0xFF;
 
-				for (j = 0; j < 8; j++) {
+				for (j = 0; j < 8; j++) { //for each LED
 
 					//red
-					if (pixels[i][j][0]!=0) {
+					if (pixels[i][j][0]!=0) {	//if the RED value is still "on"
+						//shift the first ONE bit to the right to j positions, i.e. is selecting the j-th LED
+						//then the j-th bit of r_led byte is turned on (i.e. is set to ZERO)
 						r_led &= ~(0x80 >> j);
 					}
 
 					//green
-					if (pixels[i][j][1]!=0) {
+					if (pixels[i][j][1]!=0) {	//if the GREEN value is still "on"
+						//shift the first ONE bit to the right to j positions, i.e. is selecting the j-th LED
+						//then the j-th bit of r_led byte is turned on (i.e. is set to ZERO)
 						g_led &= ~(0x80 >> j);
 					}
 
 					//blue
-					if (pixels[i][j][2]!=0) {
+					if (pixels[i][j][2]!=0) {	//if the BLUE value is still "on"
+						//shift the first ONE bit to the right to j positions, i.e. is selecting the j-th LED
+						//then the j-th bit of r_led byte is turned on (i.e. is set to ZERO)
 						b_led &= ~(0x80 >> j);
 					}	
 
@@ -69,8 +76,10 @@ void led_screenEx4() {
 				sysOutByte(0x180, r_led);
 				sysOutByte(0x181, g_led);
 				sysOutByte(0x182, b_led);
-				delayUsec(128);
+				delayUsec(128);		//delay of 128 microseconds
 			}
+			
+			//turning off LEDs
 			sysOutByte(0x180, 0xFF);
 			sysOutByte(0x181, 0xFF);
 			sysOutByte(0x182, 0xFF);
