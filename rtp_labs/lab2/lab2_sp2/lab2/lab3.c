@@ -58,8 +58,8 @@ void drawThread() {
   int pos=0,dir=1;
   while (runz==1) {
     /* Add a delay here so that this function is only run twice per second */
-	//sysClkRateSet(100);
-    taskDelay(0.5*sysClkRateGet());
+	sysClkRateSet(100);
+    taskDelay(50);
 
     pos = pos + dir;
     drawIt(pos,dir==1?1:0);
@@ -76,7 +76,7 @@ void startdraw()
 	sysOutByte(0x182,~0);
 	runz=1;
 	
-	taskSpawn("draw", 101, 0, 4000, drawThread);
+	taskSpawn("draw", 100, 0, 4000, drawThread);
 }
 
 void stopdraw()

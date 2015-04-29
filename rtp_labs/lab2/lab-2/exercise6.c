@@ -45,13 +45,13 @@ void led_screenEx6() {
 	while (1) {
 		//int i;
 		//int j;
-		
+
 		if (checkTrigger()) {
 			delayMsec(1);
 			for (i = 0; i< 16; i++) {
 
 				unsigned int rgb_leds_temp[8][3];
-				
+
 				//default behaviour: all the LEDs turned off
 				char r_led = 0xFF;
 				char g_led = 0xFF;
@@ -123,7 +123,7 @@ void led_screenEx6() {
 void startEx6() {
 	sysClkRateSet(1000);
 
-	draw_thread_pid = taskSpawn("draw_thread", 200, 0, 4000, drawThread);
+	draw_thread_pid = taskSpawn("draw_thread", 200, 0, 1000, drawThread);
 	led_screen_pid = taskSpawn("led_screen", 201, 0, 1000, led_screenEx6);
 	//get_input_pid = taskSpawn("get_input", 200, 0, 1000, get_input);
 
@@ -147,6 +147,18 @@ void stopEx6() {
 	taskDelete(led_screen_pid);
 	//taskDelete(get_input_pid);
 	taskDelete(draw_thread_pid);
+
+	int i;
+	int j;
+	int k;
+
+	for(i = 0; i < 16; i++) {
+		for (j = 0; j < 8; j++) {
+			for (k = 0; k < 3; k++) {
+				pixels[i][j][k] = 0;
+			}
+		}
+	}
 
 	sysOutByte(0x180, 0xFF);
 	sysOutByte(0x181, 0xFF);
