@@ -111,11 +111,11 @@ void led_screenEx3() {
 				}
 
 				//write to the LED card
-				/*sysOutByte(0x180, r_led);
+				sysOutByte(0x180, r_led);
 				sysOutByte(0x181, g_led);
-				sysOutByte(0x182, b_led);*/
+				sysOutByte(0x182, b_led);
 
-				sysOutByte(0x180, 0x00); //red test
+				//sysOutByte(0x180, 0x00); //red test
 
 				//delayMsec(10);
 
@@ -133,7 +133,7 @@ void led_screenEx3() {
 }
 
 void startEx3() {
-	sysClkRateSet(5000);
+	sysClkRateSet(1000);
 
 	led_screen_pid = taskSpawn("led_screen", 200, 0, 1000, led_screenEx3);
 	//get_input_pid = taskSpawn("get_input", 200, 0, 1000, get_input);

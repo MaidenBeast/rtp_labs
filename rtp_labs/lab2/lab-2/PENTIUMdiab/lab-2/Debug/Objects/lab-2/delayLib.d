@@ -1,5 +1,5 @@
 lab-2/Debug/Objects/lab-2/delayLib.o: \
-  //edunet/dfs/home17/ht14/felsah142/My\ Documents/rtp_labs/lab2/lab-2/delayLib.c \
+  C:/windriver/workspace/lab-2/delayLib.c \
   C:/windriver/vxworks-6.9/target/h/vxWorks.h \
   C:/windriver/vxworks-6.9/target/h/vxWorksCommon.h \
   C:/windriver/vxworks-6.9/target/h/types/vxCpu.h \
