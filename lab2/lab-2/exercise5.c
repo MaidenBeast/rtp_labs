@@ -56,7 +56,7 @@ void led_screenEx5() {
 		pixels[15][i][0] = 255; 	//all reds on the last column 
 	}*/
 
-	/*for(i = 0; i < 8; i++) { //The Italian flag :)	
+	for(i = 0; i < 8; i++) { //The Italian flag :)	
 		for (j = 0; j < 16; j++) {
 			if (j < 5) { //green
 				pixels[j][i][1] = 255;
@@ -68,18 +68,18 @@ void led_screenEx5() {
 				pixels[j][i][0] = 255;
 			}
 		}
-	}*/
+	}
 
-	for(i = 0; i < 8; i++) { //The Swedish flag :)
+	/*for(i = 0; i < 8; i++) { //The Swedish flag :)
 		for (j = 0; j < 16; j++) {
-			if ((j>2 && j<6) || (i>6 || i<9)) {
+			if ((j>2 && j<6) || (i>2 && i<5)) {
 				pixels[j][i][0] = 255;
 				pixels[j][i][1] = 255;
 			} else  {
 				pixels[j][i][2] = 255;
 			}
 		}
-	}
+	}*/
 
 	sysOutByte(0x184, 0x01); //enable writing bytes to LED card
 	sysOutByte(0x180, 0xFF); //turns off red LEDs
@@ -176,6 +176,17 @@ void startEx5() {
 void stopEx5() {
 	taskDelete(led_screen_pid);
 	//taskDelete(get_input_pid);
+	int i;
+	int j;
+	int k;
+
+	for(i = 0; i < 16; i++) {
+		for (j = 0; j < 8; j++) {
+			for (k = 0; k < 3; k++) {
+				pixels[i][j][k] = 0;
+			}
+		}
+	}
 
 	sysOutByte(0x180, 0xFF);
 	sysOutByte(0x181, 0xFF);

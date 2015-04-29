@@ -109,7 +109,7 @@ void startEx4() {
 		pixels[15][i][0] = 1; 	//all reds on the last column 
 	}*/
 
-	/*for(i = 0; i < 8; i++) { //The Italian flag :)	
+	for(i = 0; i < 8; i++) { //The Italian flag :)	
 		for (j = 0; j < 16; j++) {
 			if (j < 5) { //green
 				pixels[j][i][1] = 1;
@@ -121,18 +121,18 @@ void startEx4() {
 				pixels[j][i][0] = 1;
 			}
 		}
-	}*/
-	
-	for(i = 0; i < 8; i++) { //The Swedish flag :)
+	}
+
+	/*for(i = 0; i < 8; i++) { //The Swedish flag :)
 		for (j = 0; j < 16; j++) {
-			if ((j>2 && j<6) || (i>6 || i<9)) {
+			if ((j>2 && j<6) || (i>2 && i<5)) {
 				pixels[j][i][0] = 1;
 				pixels[j][i][1] = 1;
 			} else  {
 				pixels[j][i][2] = 1;
 			}
 		}
-	}
+	}*/
 
 	led_screen_pid = taskSpawn("led_screen", 200, 0, 1000, led_screenEx4);
 	//get_input_pid = taskSpawn("get_input", 200, 0, 1000, get_input);
@@ -155,6 +155,17 @@ void startEx4() {
 void stopEx4() {
 	taskDelete(led_screen_pid);
 	//taskDelete(get_input_pid);
+	int i;
+	int j;
+	int k;
+
+	for(i = 0; i < 16; i++) {
+		for (j = 0; j < 8; j++) {
+			for (k = 0; k < 3; k++) {
+				pixels[i][j][k] = 0;
+			}
+		}
+	}
 
 	sysOutByte(0x180, 0xFF);
 	sysOutByte(0x181, 0xFF);
