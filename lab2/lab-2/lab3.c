@@ -43,7 +43,7 @@ void drawThread() {
   int pos=0,dir=1;
   for(;;) {
     /* Add a delay here so that this function is only run twice per second */
-    taskDelay(2500);
+    taskDelay(500);
 
     pos = pos + dir;
     drawIt(pos,dir==1?1:0);

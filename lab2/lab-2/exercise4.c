@@ -51,21 +51,21 @@ void led_screenEx4() {
 				for (j = 0; j < 8; j++) { //for each LED
 
 					//red
-					if (pixels[i][j][0]!=0) {	//if the RED value is still "on"
+					if (pixels[15-i][j][0]!=0) {	//if the RED value is still "on"
 						//shift the first ONE bit to the right to j positions, i.e. is selecting the j-th LED
 						//then the j-th bit of r_led byte is turned on (i.e. is set to ZERO)
 						r_led &= ~(0x80 >> j);
 					}
 
 					//green
-					if (pixels[i][j][1]!=0) {	//if the GREEN value is still "on"
+					if (pixels[15-i][j][1]!=0) {	//if the GREEN value is still "on"
 						//shift the first ONE bit to the right to j positions, i.e. is selecting the j-th LED
 						//then the j-th bit of r_led byte is turned on (i.e. is set to ZERO)
 						g_led &= ~(0x80 >> j);
 					}
 
 					//blue
-					if (pixels[i][j][2]!=0) {	//if the BLUE value is still "on"
+					if (pixels[15-i][j][2]!=0) {	//if the BLUE value is still "on"
 						//shift the first ONE bit to the right to j positions, i.e. is selecting the j-th LED
 						//then the j-th bit of r_led byte is turned on (i.e. is set to ZERO)
 						b_led &= ~(0x80 >> j);
@@ -90,7 +90,7 @@ void led_screenEx4() {
 }
 
 void startEx4() {
-	sysClkRateSet(5000);
+	sysClkRateSet(1000);
 
 	int i;
 

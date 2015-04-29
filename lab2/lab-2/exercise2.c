@@ -92,15 +92,15 @@ void led_screenEx2() {
 			sysOutByte(0x182, b_led);	//blue
 
 			//sysOutByte(0x180, 0x00);
+			delayUsec(50);
 
 		}
-		delayMsec(1);
 	}
 
 }
 
 void startEx2() {
-	sysClkRateSet(5000);
+	sysClkRateSet(1000);
 	
 	led_screen_pid = taskSpawn("led_screen", 200, 0, 1000, led_screenEx2);
 	//get_input_pid = taskSpawn("get_input", 200, 0, 1000, get_input);

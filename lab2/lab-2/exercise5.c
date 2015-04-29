@@ -77,34 +77,21 @@ void led_screenEx5() {
 			for (i = 0; i< 16; i++) {	//for each column
 
 				unsigned int rgb_leds_temp[8][3];
+				
+				//default behaviour: all the LEDs turned off
+				char r_led = 0xFF;
+				char g_led = 0xFF;
+				char b_led = 0xFF;
 
 				for (j = 0; j < 8; j++) {
 					for (k = 0; k<3; k++) {
-						rgb_leds_temp[j][k] = pixels[i][j][k] >> (int)log2(256/RGB_LEVELS); //quantize the RGB values to RGB_LEVELS
+						rgb_leds_temp[j][k] = pixels[15-i][j][k] >> (int)log2(256/RGB_LEVELS); //quantize the RGB values to RGB_LEVELS
 					}
 				}
 
-				for (j = 0; j < RGB_LEVELS; j++) {	//for each RGB level (0-31, 32-64,..., 224-255)
-					//default behaviour: all the LEDs turned off
-					char r_led = 0xFF;
-					char g_led = 0xFF;
-					char b_led = 0xFF;
+				for (j = 0; j < 8; j++) {	//for each RGB level (0-31, 32-64,..., 224-255)
 
 					for (k = 0; k < 8; k++) {	//for each row
-						/*//red
-						if (r_temp <= j) {
-							r_led &= ~(0x80 >> k);
-						}
-
-						//green
-						if (g_temp <= j) {
-							g_led &= ~(0x80 >> k);
-						}
-
-						//blue
-						if (b_temp <= j) {
-							b_led &= ~(0x80 >> k);
-						}*/
 
 						//red
 						if (rgb_leds_temp[j][0]>0) { 	//if the RED value is still "on"
@@ -130,7 +117,6 @@ void led_screenEx5() {
 							rgb_leds_temp[j][2]--;		//decrement the BLUE value
 						}
 					}
-
 					sysOutByte(0x180, r_led);
 					sysOutByte(0x181, g_led);
 					sysOutByte(0x182, b_led);
@@ -148,7 +134,7 @@ void led_screenEx5() {
 }
 
 void startEx5() {
-	sysClkRateSet(5000);
+	sysClkRateSet(1000);
 
 	led_screen_pid = taskSpawn("led_screen", 200, 0, 1000, led_screenEx5);
 	//get_input_pid = taskSpawn("get_input", 200, 0, 1000, get_input);

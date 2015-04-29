@@ -3,6 +3,8 @@
 #include "vxWorks.h"
 #include "common.h"
 
+#define RGB_LEVELS 8
+
 void drawThread();
 
 int led_screen_pid;
@@ -34,34 +36,6 @@ void led_screenEx6() {
 	int j;
 	int k;
 
-	for(i = 0; i < 16; i++) {
-		for (j = 0; j < 8; j++) {
-			for (k = 0; k < 3; k++) {
-				pixels[i][j][k] = 0;
-			}
-		}
-	}
-
-	for(i = 0; i < 16; i++)
-	{
-		pixels[i][0][0] = 255;
-	}
-
-	for(i = 1; i < 8; i++)
-	{
-		pixels[0][i][1] = 255;
-	}	
-
-	pixels[1][1][2] = 255;
-	pixels[3][2][2] = 255;
-	pixels[5][3][2] = 255;
-	pixels[7][4][2] = 255;
-	pixels[9][5][2] = 255;
-	pixels[11][6][2] = 255;
-	pixels[11][7][2] = 255;
-	pixels[12][7][2] = 255;
-	pixels[13][7][2] = 255;
-
 	sysOutByte(0x184, 0x01); //enable writing bytes to LED card
 	sysOutByte(0x180, 0xFF); //turns off red LEDs
 	sysOutByte(0x181, 0xFF); //turns off green LEDs
@@ -77,20 +51,21 @@ void led_screenEx6() {
 			for (i = 0; i< 16; i++) {
 
 				unsigned int rgb_leds_temp[8][3];
+				
+				//default behaviour: all the LEDs turned off
+				char r_led = 0xFF;
+				char g_led = 0xFF;
+				char b_led = 0xFF;
 
 				for (j = 0; j < 8; j++) {
 					for (k = 0; k<3; k++) {
-						rgb_leds_temp[j][k] = pixels[i][j][k] >> 5;
+						rgb_leds_temp[j][k] = pixels[15-i][8-j][k] >> (int)log2(256/RGB_LEVELS);
 					}
 				}
 
-				for (j = 0; j < 8; j++) {
+				for (j = 0; j < 8; j++) {	//for each RGB level (0-31, 32-64,..., 224-255)
 
-					char r_led = 0xFF;
-					char g_led = 0xFF;
-					char b_led = 0xFF;
-
-					for (k = 0; k < 8; k++) {
+					for (k = 0; k < 8; k++) {	//for each row
 						/*char r_temp = (char)(pixels[i][k][0] >> 5)-j;
 						char g_temp = (char)(pixels[i][k][1] >> 5)-j;
 						char b_temp = (char)(pixels[i][k][2] >> 5)-j;*/
@@ -133,7 +108,7 @@ void led_screenEx6() {
 					sysOutByte(0x181, g_led);
 					sysOutByte(0x182, b_led);
 
-					delayUsec(128/8);
+					delayUsec(128/RGB_LEVELS); //delay for 128us/number of levels
 
 				}
 			}
@@ -146,12 +121,12 @@ void led_screenEx6() {
 }
 
 void startEx6() {
-	sysClkRateSet(5000);
+	sysClkRateSet(1000);
 
 	draw_thread_pid = taskSpawn("draw_thread", 200, 0, 4000, drawThread);
 	led_screen_pid = taskSpawn("led_screen", 201, 0, 1000, led_screenEx6);
 	//get_input_pid = taskSpawn("get_input", 200, 0, 1000, get_input);
-	
+
 
 	/*printf("get_input\n");
 	unsigned int led_no;
