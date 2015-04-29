@@ -42,25 +42,44 @@ void led_screenEx5() {
 		}
 	}
 
-	for(i = 0; i < 16; i++)
+	/*for(i = 0; i < 16; i++)
 	{
-		pixels[i][0][0] = 255;
+		pixels[i][0][0] = 255; //all reds on the first row
+		pixels[i][3][1] = 255; //all green on the 4th row
+		pixels[i][7][0] = 255; //all reds on the last row
 	}
 
-	for(i = 1; i < 8; i++)
+	for(i = 0; i < 8; i++)
 	{
-		pixels[0][i][1] = 255;
-	}	
+		pixels[0][i][0] = 255; 	//all reds on the first column
+		pixels[7][i][2] = 255; 	//all blue on the 8th column
+		pixels[15][i][0] = 255; 	//all reds on the last column 
+	}*/
 
-	pixels[1][1][2] = 255;
-	pixels[3][2][2] = 255;
-	pixels[5][3][2] = 255;
-	pixels[7][4][2] = 255;
-	pixels[9][5][2] = 255;
-	pixels[11][6][2] = 255;
-	pixels[11][7][2] = 255;
-	pixels[12][7][2] = 255;
-	pixels[13][7][2] = 255;
+	/*for(i = 0; i < 8; i++) { //The Italian flag :)	
+		for (j = 0; j < 16; j++) {
+			if (j < 5) { //green
+				pixels[j][i][1] = 255;
+			} else if (j < 10) { //white
+				pixels[j][i][0] = 255;
+				pixels[j][i][1] = 255;
+				pixels[j][i][2] = 255;
+			} else if (j < 15) { //red
+				pixels[j][i][0] = 255;
+			}
+		}
+	}*/
+
+	for(i = 0; i < 8; i++) { //The Swedish flag :)
+		for (j = 0; j < 16; j++) {
+			if ((j>2 && j<6) || (i>6 || i<9)) {
+				pixels[j][i][0] = 255;
+				pixels[j][i][1] = 255;
+			} else  {
+				pixels[j][i][2] = 255;
+			}
+		}
+	}
 
 	sysOutByte(0x184, 0x01); //enable writing bytes to LED card
 	sysOutByte(0x180, 0xFF); //turns off red LEDs
@@ -77,7 +96,7 @@ void led_screenEx5() {
 			for (i = 0; i< 16; i++) {	//for each column
 
 				unsigned int rgb_leds_temp[8][3];
-				
+
 				//default behaviour: all the LEDs turned off
 				char r_led = 0xFF;
 				char g_led = 0xFF;

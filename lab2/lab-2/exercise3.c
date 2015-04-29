@@ -111,11 +111,11 @@ void led_screenEx3() {
 				}
 
 				//write to the LED card
-				sysOutByte(0x180, r_led);
+				/*sysOutByte(0x180, r_led);
 				sysOutByte(0x181, g_led);
-				sysOutByte(0x182, b_led);
+				sysOutByte(0x182, b_led);*/
 
-				//sysOutByte(0x180, 0x00); //red test
+				sysOutByte(0x180, 0x00); //red test
 
 				//delayMsec(10);
 
