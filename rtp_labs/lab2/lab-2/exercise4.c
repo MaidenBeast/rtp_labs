@@ -78,7 +78,7 @@ void led_screenEx4() {
 				sysOutByte(0x182, b_led);
 				delayUsec(128);		//delay of 128 microseconds
 			}
-			
+
 			//turning off LEDs
 			sysOutByte(0x180, 0xFF);
 			sysOutByte(0x181, 0xFF);
@@ -93,26 +93,46 @@ void startEx4() {
 	sysClkRateSet(1000);
 
 	int i;
+	int j;
 
-	for(i = 0; i < 16; i++)
+	/*for(i = 0; i < 16; i++)
 	{
 		pixels[i][0][0] = 1; //all reds on the first row
+		pixels[i][3][1] = 1; //all green on the 4th row
+		pixels[i][7][0] = 1; //all reds on the last row
 	}
 
-	for(i = 1; i < 8; i++)
+	for(i = 0; i < 8; i++)
 	{
-		pixels[0][i][1] = 1; //all green in the first column
-	}	
+		pixels[0][i][0] = 1; 	//all reds on the first column
+		pixels[7][i][2] = 1; 	//all blue on the 8th column
+		pixels[15][i][0] = 1; 	//all reds on the last column 
+	}*/
 
-	pixels[1][1][2] = 1; 
-	pixels[3][2][2] = 1;
-	pixels[5][3][2] = 1;
-	pixels[7][4][2] = 1;
-	pixels[9][5][2] = 1;
-	pixels[11][6][2] = 1;
-	pixels[11][7][2] = 1;
-	pixels[12][7][2] = 1;
-	pixels[13][7][2] = 1;
+	/*for(i = 0; i < 8; i++) { //The Italian flag :)	
+		for (j = 0; j < 16; j++) {
+			if (j < 5) { //green
+				pixels[j][i][1] = 1;
+			} else if (j < 10) { //white
+				pixels[j][i][0] = 1;
+				pixels[j][i][1] = 1;
+				pixels[j][i][2] = 1;
+			} else if (j < 15) { //red
+				pixels[j][i][0] = 1;
+			}
+		}
+	}*/
+	
+	for(i = 0; i < 8; i++) { //The Swedish flag :)
+		for (j = 0; j < 16; j++) {
+			if ((j>2 && j<6) || (i>6 || i<9)) {
+				pixels[j][i][0] = 1;
+				pixels[j][i][1] = 1;
+			} else  {
+				pixels[j][i][2] = 1;
+			}
+		}
+	}
 
 	led_screen_pid = taskSpawn("led_screen", 200, 0, 1000, led_screenEx4);
 	//get_input_pid = taskSpawn("get_input", 200, 0, 1000, get_input);

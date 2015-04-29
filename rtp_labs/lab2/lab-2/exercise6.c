@@ -45,7 +45,7 @@ void led_screenEx6() {
 	while (1) {
 		//int i;
 		//int j;
-
+		
 		if (checkTrigger()) {
 			delayMsec(1);
 			for (i = 0; i< 16; i++) {
