@@ -36,17 +36,6 @@ void led_screenEx3() {
 			{0, 0, 255}
 	};
 
-	/*unsigned int rgb_leds[8][3] = {
-				{198, 237, 45}, //simil yellow
-				{156, 4, 136}, //simil purple
-				{49, 132, 93}, //verde muschio
-				{179, 9, 185}, //violet
-				{129, 195, 253}, //blue sky
-				{46, 49, 253}, //light blue
-				{119, 189, 53}, //tree green
-				{40, 77, 28} //dark green 
-		};*/
-
 	int i;
 	int j;
 
