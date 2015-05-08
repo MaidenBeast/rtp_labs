@@ -4,8 +4,6 @@
 #include "motor1.h"
 #include "motor2.h"
 
-//#define CHECK_INPUT()		do {input = readKeyboard();} while (input != 1);
-
 void lab3() {
 	int input = 13; //D (entering into calibrarion mode)
 	running_mode = CONFIG;
@@ -20,15 +18,6 @@ void lab3() {
 		switch (running_mode) {
 			case CONFIG:
 
-				if (input == 13) {
-					//1.	The power to the motors must be off (TODO)
-
-					//2.	The warning lamp must signal calibration mode.  This is done by PWM controlling the
-					//		lamp going smoothly from 0% intensity to 100% intensity over 2s and then starting over
-					//		abruptly from 0% again.
-					lamp_mode = CONFIG;
-				}
-
 				do { //reads from keyboard matrix until the user digit something on the keyboard
 					input = readKeyboard();
 				} while (input != -1);
@@ -37,11 +26,17 @@ void lab3() {
 					case 0:
 						//End configuration mode and go to run-mode.
 						running_mode = RUN;
-						fan_mode = FIFTY_PERCENT;
+						fan_mode = FIFTY_PERCENT; //because the machine are not running at the beginning
 						lamp_mode = NOT_WORKING;
 
 						motor1PID = taskSpawn("motor1", 100, 0, 1000, motor1);
 						motor2PID = taskSpawn("motor2", 101, 0, 1000, motor2);
+
+						semMotor1 = semBCreate(SEM_Q_PRIORITY, SEM_FULL);
+						semMotor2 = semBCreate(SEM_Q_PRIORITY, SEM_FULL);
+
+						m1MsgQId = msgQCreate(MAX_MSGS, sizeof(char), MSG_Q_FIFO);
+						m2MsgQId = msgQCreate(MAX_MSGS, sizeof(char), MSG_Q_FIFO);
 
 						break;
 					case 1:
@@ -64,7 +59,7 @@ void lab3() {
 
 				// The system waits to be reset
 
-				do { //reads from keyboard matrix until the user digit something on the keyboard
+				do { //reads from keyboard matrix until the user digits something on the keyboard
 					input = readKeyboard();
 				} while (input != 13); //D: Restart, the system enters calibration mode
 
@@ -88,8 +83,7 @@ void lab3() {
 						//TODO: Release the power to the engines
 						lamp_mode = OFF		//turn of the lamp
 						fan_mode = OFF;		//turn off the fan
-						//shutdown all processes
-						stop();
+						stop();				//shutdown all processes
 					case 15: //F: Emergency stop.
 						//TODO: Immediately stop all the stepping of the engines
 						fan_mode = OFF; //turns off the fan
@@ -111,6 +105,12 @@ void lab3() {
 }
 
 void stop() {
+	msgQDelete(m1MsgQId);
+	msgQDelete(m2MsgQId);
+
+	semDelete(semMotor1);
+	semDelete(semMotor2);
+
 	taskDelete(motor1PID);
 	taskDelete(motor2PID);
 	taskDelete(lamp_PID);

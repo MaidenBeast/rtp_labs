@@ -16,10 +16,10 @@ enum lamp_mode_t {
 	CONFIG, 				//"This is done by PWM controlling the lamp going smoothly from 0% intensity to 100% intensity over 2s and then starting over abruptly from 0% again."
 	WORKING,				//"Then the machines are working, the lamp should blink with 3 on/off flashes every second."
 	NOT_WORKING,			//"When the machines are not, the lamp should smoothly go from zero intensity to full intensity, and then smoothly back to zero. Each such cycle should take 4s."
-	ERROR					//"The warning lamp signals error mode by turning on for 1s and then off for 1s, repeatedly
+	ERROR					//"The warning lamp signals error mode by turning on for 1s and then off for 1s, repeatedly"
 };
 
-extern enum lamp_mode lamp_mode;
+extern enum lamp_mode_t lamp_mode;
 
 enum fan_mode_t {
 	OFF,
