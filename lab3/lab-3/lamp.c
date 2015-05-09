@@ -69,3 +69,12 @@ void lamp() {
 		}
 	}
 }
+
+void start_test_lamp() {
+	sysOutByte(0x184, 0xFF);
+	lamp_PID = taskSpawn("lamp", 200, 0, 1000, lamp);
+}
+
+void stop_test_lamp() {
+	taskDelete(lamp_PID);
+}
