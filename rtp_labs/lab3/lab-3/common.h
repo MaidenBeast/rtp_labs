@@ -14,7 +14,7 @@ typedef enum {
 	ERR			//error mode
 } running_mode_t;
 
-extern running_mode_t running_mode;		//the running mode in an exact instant time
+running_mode_t running_mode;		//the running mode in an exact instant time
 
 
 typedef enum {
@@ -32,23 +32,23 @@ typedef enum {
 } fan_mode_t;
 
 /*		lamp and fan states		*/
-extern int lamp_state;	//0 = off; 1 = on;
-extern int fan_state; 	//0 = off; 1 = on;
+int lamp_state;	//0 = off; 1 = on;
+int fan_state; 	//0 = off; 1 = on;
 
 /* 		message queues 		*/
-extern MSG_Q_ID m1MsgQId;			//message queue used by motor1 task
-extern MSG_Q_ID m2MsgQId;			//message queue used by motor2 task
+MSG_Q_ID m1MsgQId;			//message queue used by motor1 task
+MSG_Q_ID m2MsgQId;			//message queue used by motor2 task
 
 
 /* 		  semaphores			*/
-extern SEM_ID semMotor1;			//binary semaphore about the usage of motor1 (0 if busy/working, 1 if free/not working)
-extern SEM_ID semMotor2;			//binary semaphore about the usage of motor2 (0 if busy/working, 1 if free/not working)
+SEM_ID semMotor1;			//binary semaphore about the usage of motor1 (0 if busy/working, 1 if free/not working)
+SEM_ID semMotor2;			//binary semaphore about the usage of motor2 (0 if busy/working, 1 if free/not working)
 
 /*			tasks				*/
-extern int motor1_PID;
-extern int motor2_PID;
+int motor1_PID;
+int motor2_PID;
 
-extern int lamp_PID;
-extern int fan_PID;
+int lamp_PID;
+int fan_PID;
 
 #endif
