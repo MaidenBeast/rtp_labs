@@ -34,21 +34,24 @@ void lamp() {
 			if (lamp_state) { //turn off the lamp only if it is still on
 				lamp_state = 0;
 				sysOutByte(0x182, (fan_state) ? FAN_FLAG : 0x00);
-				//sysOutByte(0x182, (fan_state) ? FAN_FLAG|LAMP_FLAG : LAMP_FLAG);
 			}
+			taskDelay(10);
 			break;
 		case LAMP_CONFIG:
 			shineLamp(20000, lamp_intensity); //shine interval for 20ms (2 seconds / 100)
 			lamp_counter++;
 			lamp_intensity = (lamp_counter)%100;
+			taskDelay(1);
 			break;
 		case MACHINE_WORKING:
 			sysOutByte(0x182, (fan_state) ? FAN_FLAG|LAMP_FLAG : LAMP_FLAG); //turn on the lamp
 			lamp_state = 1;
-			delayMsec(166);
+			//delayMsec(166);
+			taskDelay(166);
 			sysOutByte(0x182, (fan_state) ? FAN_FLAG : 0x00);	//turn off the lamp
 			lamp_state = 0;
-			delayMsec(166);
+			//delayMsec(166);
+			taskDelay(166);
 			break;
 		case MACHINE_NOT_WORKING:
 			shineLamp(20000, lamp_intensity); //shine interval for 20ms (2 seconds / 100)
@@ -61,16 +64,21 @@ void lamp() {
 		case LAMP_ERR:
 			sysOutByte(0x182, (fan_state) ? FAN_FLAG|LAMP_FLAG : LAMP_FLAG); //turn on the lamp
 			lamp_state = 1;
-			delayMsec(1000);
+			//delayMsec(1000);
+			taskDelay(1000);
 			sysOutByte(0x182, (fan_state) ? FAN_FLAG : 0x00);	//turn off the lamp
 			lamp_state = 0;
-			delayMsec(1000);
+			//delayMsec(1000);
+			taskDelay(1000);
 			break;
 		}
 	}
 }
 
 void start_test_lamp() {
+	sysClkRateSet(1000);
+	kernelTimeSlice(10);
+	lamp_mode = 0;
 	sysOutByte(0x184, 0xFF);
 	lamp_PID = taskSpawn("lamp", 200, 0, 1000, lamp);
 }
