@@ -18,13 +18,19 @@ void stop() {
 }
 
 void lab3() {
+	sysClkRateSet(1000);
+	kernelTimeSlice(10); //enable round-robin scheduling process
+	
 	int input = 13; //D (entering into calibrarion mode)
 	running_mode = CONFIG;
 	changeFanMode(FAN_OFF);
 	changeLampMode(LAMP_CONFIG);
+	
+	lamp_state = 0;
+	fan_state = 0;
 
 	lamp_PID = taskSpawn("lamp", 200, 0, 1000, lamp);
-	fan_PID = taskSpawn("fan", 200, 0, 1000, fan);
+	fan_PID = taskSpawn("fan", 201, 0, 1000, fan);
 	
 	sysOutByte(0x184, 0xFF); //taking control of fan and lamp ports
 	
