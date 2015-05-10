@@ -60,6 +60,7 @@ void lamp() {
 			if (lamp_intensity>100) {
 				lamp_intensity = 200 - lamp_intensity;
 			}
+			taskDelay(1);
 			break;
 		case LAMP_ERR:
 			sysOutByte(0x182, (fan_state) ? FAN_FLAG|LAMP_FLAG : LAMP_FLAG); //turn on the lamp
