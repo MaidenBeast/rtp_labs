@@ -51,4 +51,6 @@ int motor2_PID;
 int lamp_PID;
 int fan_PID;
 
+int lab3_PID;
+
 #endif
