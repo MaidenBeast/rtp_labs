@@ -80,6 +80,7 @@ void lab3() {
 				}
 				break;
 			case ERR:
+				taskDelay(100);
 				//TODO: The motors should stop rotating immediately
 
 				//The job queues for the engines are emptied;
@@ -94,7 +95,7 @@ void lab3() {
 				do { //reads from keyboard matrix until the user digits something on the keyboard
 					input = readKeyboard();
 					//taskDelay(10);
-				} while (input != 1 || input != 13); //D: Restart, the system enters calibration mode
+				} while (input == -1 && input != 13); //D: Restart, the system enters calibration mode
 
 				taskDelete(motor1_PID);
 				taskDelete(motor2_PID);
@@ -105,7 +106,8 @@ void lab3() {
 
 				break;
 			default: 	//RUN
-
+				taskDelay(100);
+				
 				do { //reads from keyboard matrix until the user digit something on the keyboard
 					input = readKeyboard();
 					//taskDelay(10);
@@ -141,5 +143,5 @@ void lab3() {
 }
 
 void start() {
-	lab3_PID = taskSpawn("lab3", 202, 0, 1000, lab3);
+	lab3_PID = taskSpawn("lab3", 201, 0, 1000, lab3);
 }
