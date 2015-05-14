@@ -205,13 +205,18 @@ lab-3_partialImage/$(MODE_DIR)/Objects/lab-3/motor2.o : $(PRJ_ROOT_DIR)/motor2.c
 	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)dcc $(DEBUGFLAGS_C-Compiler) $(CC_ARCH_SPEC) -W:c:,-Xclib-optim-off -Xansi -Xlocal-data-area-static-only -Xsystem-headers-warn -Xc-new -Xdialect-c89  -ei1518,4177,4223,4301,4550,5409,1606 -ei4193,4826,4381,4237,1573,4007,4082,4177,4223,4260,4550,5361,5828 -ei1522,4092,4111,4144,4152,4167,4171,4174,4186,4188,4191,4192,4223,4231,4236,4284,4375,4494,4513,5152,5457 -Xforce-declarations   -Xmake-dependency=0xd $(IDE_DEFINES) $(DEFINES) $(ADDED_CFLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -o "$@" -c "$<"
 
 
+lab-3_partialImage/$(MODE_DIR)/Objects/lab-3/testMotor.o : $(PRJ_ROOT_DIR)/testMotor.c $(FORCE_FILE_BUILD)
+	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)dcc $(DEBUGFLAGS_C-Compiler) $(CC_ARCH_SPEC) -W:c:,-Xclib-optim-off -Xansi -Xlocal-data-area-static-only -Xsystem-headers-warn -Xc-new -Xdialect-c89  -ei1518,4177,4223,4301,4550,5409,1606 -ei4193,4826,4381,4237,1573,4007,4082,4177,4223,4260,4550,5361,5828 -ei1522,4092,4111,4144,4152,4167,4171,4174,4186,4188,4191,4192,4223,4231,4236,4284,4375,4494,4513,5152,5457 -Xforce-declarations   -Xmake-dependency=0xd $(IDE_DEFINES) $(DEFINES) $(ADDED_CFLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -o "$@" -c "$<"
+
+
 OBJECTS_lab-3_partialImage = lab-3_partialImage/$(MODE_DIR)/Objects/lab-3/delayLib.o \
 	 lab-3_partialImage/$(MODE_DIR)/Objects/lab-3/fan.o \
 	 lab-3_partialImage/$(MODE_DIR)/Objects/lab-3/lab3.o \
 	 lab-3_partialImage/$(MODE_DIR)/Objects/lab-3/lamp.o \
 	 lab-3_partialImage/$(MODE_DIR)/Objects/lab-3/machine-utils.o \
 	 lab-3_partialImage/$(MODE_DIR)/Objects/lab-3/motor1.o \
-	 lab-3_partialImage/$(MODE_DIR)/Objects/lab-3/motor2.o
+	 lab-3_partialImage/$(MODE_DIR)/Objects/lab-3/motor2.o \
+	 lab-3_partialImage/$(MODE_DIR)/Objects/lab-3/testMotor.o
 
 ifeq ($(TARGET_JOBS),1)
 lab-3_partialImage/$(MODE_DIR)/lab-3_partialImage.o : $(OBJECTS_lab-3_partialImage)
@@ -236,7 +241,7 @@ TARGET_JOBS_RULE?=echo update makefile template
 
 DEP_FILES := lab-3_partialImage/$(MODE_DIR)/Objects/lab-3/delayLib.d lab-3_partialImage/$(MODE_DIR)/Objects/lab-3/fan.d lab-3_partialImage/$(MODE_DIR)/Objects/lab-3/lab3.d \
 	 lab-3_partialImage/$(MODE_DIR)/Objects/lab-3/lamp.d lab-3_partialImage/$(MODE_DIR)/Objects/lab-3/machine-utils.d lab-3_partialImage/$(MODE_DIR)/Objects/lab-3/motor1.d \
-	 lab-3_partialImage/$(MODE_DIR)/Objects/lab-3/motor2.d
+	 lab-3_partialImage/$(MODE_DIR)/Objects/lab-3/motor2.d lab-3_partialImage/$(MODE_DIR)/Objects/lab-3/testMotor.d
 -include $(DEP_FILES)
 
 
