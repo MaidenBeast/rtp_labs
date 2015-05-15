@@ -12,14 +12,14 @@ void testMotor1() {
 		//M1_STEP: one step of motor 1
 		//M1_DIR: counterclockwise (in case of 0 --> clockwise)
 		sysOutByte(0x181,M2_INHIB|M1_STEP|M1_DIR);
-		taskDelay(delay);
+		taskDelay(5);
 		sysOutByte(0x181,M2_INHIB|M1_DIR);
-		taskDelay(delay);
+		taskDelay(delay-5);
 
 		sysOutByte(0x181,M2_INHIB|M1_STEP|M1_HFM|M1_DIR);
-		taskDelay(delay);
+		taskDelay(5);
 		sysOutByte(0x181,M2_INHIB|M1_DIR);
-		taskDelay(delay);
+		taskDelay(delay-5);
 	}
 }
 

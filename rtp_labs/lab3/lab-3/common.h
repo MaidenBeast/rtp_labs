@@ -35,6 +35,21 @@ typedef enum {
 int lamp_state;	//0 = off; 1 = on;
 int fan_state; 	//0 = off; 1 = on;
 
+/* 		motor state types		*/
+
+typedef enum {
+	CLOCKWISE,
+	COUNTERCLOCKWISE
+} motor_direction_t;
+
+typedef enum {
+	HIGH_SPEED,		//60 steps per second
+	LOW_SPEED		//10 steps per second
+} motor_speed_t;
+
+#define FULL_ROTATION_STEPS 48
+#define HALF_ROTATION_STEPS 24
+
 /* 		message queues 		*/
 MSG_Q_ID m1MsgQId;			//message queue used by motor1 task
 MSG_Q_ID m2MsgQId;			//message queue used by motor2 task
