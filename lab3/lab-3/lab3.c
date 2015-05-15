@@ -51,7 +51,6 @@ void lab3() {
 
 			do { //reads from keyboard matrix until the user digit something on the keyboard
 				input = readKeyboard();
-				//taskDelay(10);
 			} while (input == -1);
 
 			switch (input) { //	3. The following 3 operator commands can be given:
@@ -61,14 +60,14 @@ void lab3() {
 				changeFanMode(FAN_FIFTY_PERCENT); //because the machine are not running at the beginning
 				changeLampMode(MACHINE_NOT_WORKING);
 
-				motor1_PID = taskSpawn("motor1", 210, 0, 1000, motor1);
-				motor2_PID = taskSpawn("motor2", 211, 0, 1000, motor2);
+				motor1_PID = taskSpawn("motor1", 200, 0, 1000, motor1);
+				motor2_PID = taskSpawn("motor2", 200, 0, 1000, motor2);
 
 				semMotor1 = semBCreate(SEM_Q_PRIORITY, SEM_FULL);
 				semMotor2 = semBCreate(SEM_Q_PRIORITY, SEM_FULL);
 
-				m1MsgQId = msgQCreate(10, sizeof(char), MSG_Q_FIFO);
-				m2MsgQId = msgQCreate(10, sizeof(char), MSG_Q_FIFO);
+				m1MsgQId = msgQCreate(10, 2, MSG_Q_FIFO);
+				m2MsgQId = msgQCreate(10, 2, MSG_Q_FIFO);
 
 				break;
 			case 1:
@@ -97,6 +96,8 @@ void lab3() {
 			case ERR:
 				taskDelay(100);
 				//TODO: The motors should stop rotating immediately
+				
+				input = -1;
 
 				//The job queues for the engines are emptied;
 				msgQDelete(m1MsgQId);
@@ -122,12 +123,16 @@ void lab3() {
 				break;
 			default: 	//RUN
 				taskDelay(100);
+				
+				input = -1;
 
 				do { //reads from keyboard matrix until the user digit something on the keyboard
 					input = readKeyboard();
 					//taskDelay(10);
 				} while (input == -1 || (!(input>=0 && input<=6) && input!=10 && input!=11 && input!=15));
-
+				
+				char msg[2];
+				
 				switch (input) {
 				case 0:
 					//TODO: Stop the motors at the next safe position
@@ -143,11 +148,13 @@ void lab3() {
 					changeRunningMode(ERR); //and enter error mode
 					break;
 				default:
+					sprintf(msg, "%1x", input);
+					
 					if ((input>= 1 && input<= 3) || input == 10) {
-						msgQSend(m1MsgQId, (char)input, 1, WAIT_FOREVER, MSG_PRI_NORMAL); //send the input to motor1 message queue
+						msgQSend(m1MsgQId, msg, 2, WAIT_FOREVER, MSG_PRI_NORMAL); //send the input to motor1 message queue
 					}
 					if ((input>= 4 && input<= 6) || input == 11) {
-						msgQSend(m2MsgQId, (char)input, 1, WAIT_FOREVER, MSG_PRI_NORMAL); //send the input to motor2 message queue
+						msgQSend(m2MsgQId, msg, 2, WAIT_FOREVER, MSG_PRI_NORMAL); //send the input to motor2 message queue
 					}
 					break;
 				}

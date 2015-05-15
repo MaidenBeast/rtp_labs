@@ -57,7 +57,9 @@ lab-3_partialImage/Debug/Objects/lab-3/motor1.o: \
   C:/windriver/vxworks-6.9/target/h/errno.h \
   C:/windriver/vxworks-6.9/target/h/msgQLib.h \
   C:/windriver/vxworks-6.9/target/h/msgQLibCommon.h \
-  C:/windriver/workspace/lab-3/machine-utils.h
+  C:/windriver/workspace/lab-3/machine-utils.h \
+  C:/windriver/workspace/lab-3/fan.h \
+  C:/windriver/workspace/lab-3/lamp.h
 
 C:/windriver/workspace/lab-3/common.h:
 
@@ -174,4 +176,8 @@ C:/windriver/vxworks-6.9/target/h/msgQLib.h:
 C:/windriver/vxworks-6.9/target/h/msgQLibCommon.h:
 
 C:/windriver/workspace/lab-3/machine-utils.h:
+
+C:/windriver/workspace/lab-3/fan.h:
+
+C:/windriver/workspace/lab-3/lamp.h:
 
