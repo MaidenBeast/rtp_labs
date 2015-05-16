@@ -11,7 +11,7 @@ void stop() {
 	if (m1MsgQId!=0) msgQDelete(m1MsgQId);
 	if (m2MsgQId!=0) msgQDelete(m2MsgQId);
 
-	if (semMotor1!=0) semDelete(semMotor1);
+	if (semMotors!=0) semDelete(semMotors);
 	if (semMotor2!=0) semDelete(semMotor2);
 
 	if (motor1_PID!=0) taskDelete(motor1_PID);
@@ -22,7 +22,8 @@ void stop() {
 
 	if (lab3_PID!=0) taskDelete(lab3_PID);
 
-	sysOutByte(0x181, M2_INHIB|M1_INHIB);
+	sysOutByte(0x181, M2_INHIB);
+	sysOutByte(0x181, M1_INHIB);
 }
 
 void changeRunningMode(running_mode_t mode) {
@@ -53,11 +54,13 @@ void lab3() {
 		switch (running_mode) {
 		case CONFIG:
 
+			sysOutByte(0x181,M1_INHIB|M2_INHIB);
+
 			do { //reads from keyboard matrix until the user digit something on the keyboard
 				previousInput = input;
 				input = readKeyboard();
 			} while (input == -1 || previousInput==input);
-			
+
 			previousInput = input;
 
 			switch (input) { //	3. The following 3 operator commands can be given:
@@ -70,7 +73,7 @@ void lab3() {
 				motor1_PID = taskSpawn("motor1", 200, 0, 1000, motor1);
 				motor2_PID = taskSpawn("motor2", 200, 0, 1000, motor2);
 
-				semMotor1 = semBCreate(SEM_Q_PRIORITY, SEM_FULL);
+				semMotors = semBCreate(SEM_Q_PRIORITY, SEM_FULL);
 				semMotor2 = semBCreate(SEM_Q_PRIORITY, SEM_FULL);
 
 				m1MsgQId = msgQCreate(10, 2, MSG_Q_FIFO);
@@ -84,7 +87,7 @@ void lab3() {
 				taskDelay(25);
 				sysOutByte(0x181,M2_INHIB);
 				taskDelay(25);
-				sysOutByte(0x181,M2_INHIB|M1_INHIB);
+				sysOutByte(0x181,M1_INHIB|M2_INHIB);
 				taskDelay(50);
 				break;
 
@@ -102,13 +105,17 @@ void lab3() {
 			break;
 			case ERR:
 				taskDelay(100);
-				//TODO: The motors should stop rotating immediately
+
+				sysOutByte(0x181,M1_INHIB|M2_INHIB);
 
 				//input = -1;
 
 				//The job queues for the engines are emptied;
 				msgQDelete(m1MsgQId);
 				msgQDelete(m2MsgQId);
+
+				taskDelete(motor1_PID);
+				taskDelete(motor2_PID);
 
 				//The warning lamp signals error mode by turning on for 1s and then off for 1s, repeatedly
 				changeLampMode(LAMP_ERR);
@@ -120,11 +127,8 @@ void lab3() {
 					input = readKeyboard();
 					//taskDelay(10);
 				} while ((input == -1 && input != 13) || previousInput==input); //D: Restart, the system enters calibration mode
-				
+
 				previousInput = input;
-				
-				taskDelete(motor1_PID);
-				taskDelete(motor2_PID);
 
 				changeRunningMode(CONFIG);
 				changeFanMode(FAN_OFF);
@@ -141,9 +145,9 @@ void lab3() {
 					input = readKeyboard();
 					//taskDelay(10);
 				} while (input == -1 || (!(input>=0 && input<=6) && input!=10 && input!=11 && input!=15) || previousInput==input);
-				
+
 				previousInput = input;
-				
+
 				char msg[2];
 
 				switch (input) {

@@ -15,35 +15,9 @@ void motor2() {
 		msgQReceive(m2MsgQId, msg, 2, WAIT_FOREVER);
 
 		if (strcmp(msg, "4")==0) {
-			int ticks_interval = (motor2_speed==HIGH_SPEED) ? sysClkRateGet()/60 : sysClkRateGet()/10;
-			
-			//Rotate tool 2 one full rotation.
-			
-			char dir = (motor2_direction==COUNTERCLOCKWISE) ? M2_DIR : 0x00;
-			
-			for (counter_motor2_steps=0; counter_motor2_steps<FULL_ROTATION_STEPS; counter_motor2_steps++) {
-				sysOutByte(0x181,M1_INHIB|M2_STEP|M2_HFM|dir);
-				taskDelay(5);
-				sysOutByte(0x181,M1_INHIB|dir);
-				taskDelay(ticks_interval-5);
-			}
-
+			rotateMotor2(FULL_ROTATION_STEPS);
 		} else if (strcmp(msg, "5")==0) {
-			int ticks_interval = (motor2_speed==HIGH_SPEED) ? sysClkRateGet()/60 : sysClkRateGet()/10; 
-			
-			//Rotate tool 1 one half rotation.
-			
-			char dir = (motor2_direction==COUNTERCLOCKWISE) ? M2_DIR : 0x00;
-			
-			for (counter_motor2_steps=0; counter_motor2_steps<HALF_ROTATION_STEPS; counter_motor2_steps++) {
-				sysOutByte(0x181,M1_INHIB|M2_STEP|M2_HFM|dir);
-				taskDelay(5);
-				sysOutByte(0x181,M1_INHIB|dir);
-				taskDelay(ticks_interval-5);
-			}
-
-			counter_motor2_steps = 0;
-
+			rotateMotor2(HALF_ROTATION_STEPS);
 		} else if (strcmp(msg, "6")==0) {
 			//Change direction of rotations for tool 1.
 			motor2_direction = (motor2_direction==CLOCKWISE) ? COUNTERCLOCKWISE : CLOCKWISE;
@@ -54,4 +28,27 @@ void motor2() {
 
 		taskDelay(10);
 	}
+}
+
+void rotateMotor2(int n_rotations) {
+	int ticks_interval = (motor2_speed==HIGH_SPEED) ? sysClkRateGet()/60 : sysClkRateGet()/10;
+
+	//Rotate tool 1 one full rotation.
+	char dir = (motor2_direction==COUNTERCLOCKWISE) ? M2_DIR : 0x00;
+
+	changeLampMode(MACHINE_WORKING);
+	changeFanMode(FAN_ONE_HUNDRED_PERCENT);
+
+	semTake(semMotors, WAIT_FOREVER);
+	for (counter_motor2_steps=0; counter_motor2_steps<n_rotations; counter_motor2_steps++) {
+		sysOutByte(0x181,M1_INHIB|M2_STEP|M2_HFM|dir);
+		taskDelay(5);
+		sysOutByte(0x181,M1_INHIB|dir);
+		taskDelay(ticks_interval-5);
+	}
+	taskDelay(1000);
+	semGive(semMotors);
+
+	changeLampMode(MACHINE_NOT_WORKING);
+	changeFanMode(FAN_FIFTY_PERCENT);
 }
