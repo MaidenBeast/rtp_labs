@@ -10,7 +10,6 @@ void motor2() {
 	motor2_speed = LOW_SPEED;
 
 	char msg[2];
-	char dir;
 
 	while(1) {
 		msgQReceive(m2MsgQId, msg, 2, WAIT_FOREVER);
@@ -20,7 +19,7 @@ void motor2() {
 			
 			//Rotate tool 2 one full rotation.
 			
-			dir = (motor2_direction==COUNTERCLOCKWISE) ? M2_DIR : 0x00;
+			char dir = (motor2_direction==COUNTERCLOCKWISE) ? M2_DIR : 0x00;
 			
 			for (counter_motor2_steps=0; counter_motor2_steps<FULL_ROTATION_STEPS; counter_motor2_steps++) {
 				sysOutByte(0x181,M1_INHIB|M2_STEP|M2_HFM|dir);
@@ -34,7 +33,7 @@ void motor2() {
 			
 			//Rotate tool 1 one half rotation.
 			
-			dir = (motor2_direction==COUNTERCLOCKWISE) ? M2_DIR : 0x00;
+			char dir = (motor2_direction==COUNTERCLOCKWISE) ? M2_DIR : 0x00;
 			
 			for (counter_motor2_steps=0; counter_motor2_steps<HALF_ROTATION_STEPS; counter_motor2_steps++) {
 				sysOutByte(0x181,M1_INHIB|M2_STEP|M2_HFM|dir);

@@ -5,6 +5,7 @@
 #include "motor2.h"
 
 int input;
+int previousInput;
 
 void stop() {
 	if (m1MsgQId!=0) msgQDelete(m1MsgQId);
@@ -20,12 +21,12 @@ void stop() {
 	if (fan_PID!=0) taskDelete(fan_PID);
 
 	if (lab3_PID!=0) taskDelete(lab3_PID);
-	
+
 	sysOutByte(0x181, M2_INHIB|M1_INHIB);
 }
 
 void changeRunningMode(running_mode_t mode) {
-	input = -1;
+	//input = -1;
 	running_mode = mode;
 }
 
@@ -34,6 +35,7 @@ void lab3() {
 	kernelTimeSlice(10); //enable round-robin scheduling process
 
 	input = 13; //D (entering into calibrarion mode)
+	previousInput = -1;
 	running_mode = CONFIG;
 	changeFanMode(FAN_OFF);
 	changeLampMode(LAMP_CONFIG);
@@ -52,8 +54,11 @@ void lab3() {
 		case CONFIG:
 
 			do { //reads from keyboard matrix until the user digit something on the keyboard
+				previousInput = input;
 				input = readKeyboard();
-			} while (input == -1);
+			} while (input == -1 || previousInput==input);
+			
+			previousInput = input;
 
 			switch (input) { //	3. The following 3 operator commands can be given:
 			case 0:
@@ -98,8 +103,8 @@ void lab3() {
 			case ERR:
 				taskDelay(100);
 				//TODO: The motors should stop rotating immediately
-				
-				input = -1;
+
+				//input = -1;
 
 				//The job queues for the engines are emptied;
 				msgQDelete(m1MsgQId);
@@ -111,10 +116,13 @@ void lab3() {
 				// The system waits to be reset
 
 				do { //reads from keyboard matrix until the user digits something on the keyboard
+					previousInput = input;
 					input = readKeyboard();
 					//taskDelay(10);
-				} while (input == -1 && input != 13); //D: Restart, the system enters calibration mode
-
+				} while ((input == -1 && input != 13) || previousInput==input); //D: Restart, the system enters calibration mode
+				
+				previousInput = input;
+				
 				taskDelete(motor1_PID);
 				taskDelete(motor2_PID);
 
@@ -125,16 +133,19 @@ void lab3() {
 				break;
 			default: 	//RUN
 				taskDelay(100);
-				
-				input = -1;
+
+				//input = -1;
 
 				do { //reads from keyboard matrix until the user digit something on the keyboard
+					previousInput = input;
 					input = readKeyboard();
 					//taskDelay(10);
-				} while (input == -1 || (!(input>=0 && input<=6) && input!=10 && input!=11 && input!=15));
+				} while (input == -1 || (!(input>=0 && input<=6) && input!=10 && input!=11 && input!=15) || previousInput==input);
+				
+				previousInput = input;
 				
 				char msg[2];
-				
+
 				switch (input) {
 				case 0:
 					//TODO: Stop the motors at the next safe position
@@ -151,7 +162,7 @@ void lab3() {
 					break;
 				default:
 					sprintf(msg, "%1x", input);
-					
+
 					if ((input>= 1 && input<= 3) || input == 10) {
 						msgQSend(m1MsgQId, msg, 2, WAIT_FOREVER, MSG_PRI_NORMAL); //send the input to motor1 message queue
 					}
