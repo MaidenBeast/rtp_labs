@@ -1,17 +1,16 @@
 #include "common.h"
 #include "fan.h"
 #include "lamp.h"
+#include "motor2.h"
 
 void motor2() {
-	motor_direction_t motor2_direction;
-	motor_speed_t motor2_speed;
-
 	int counter_motor2_steps;		//48 full-steps per rotation
 
 	motor2_direction = CLOCKWISE;
 	motor2_speed = LOW_SPEED;
 
 	char msg[2];
+	char dir;
 
 	while(1) {
 		msgQReceive(m2MsgQId, msg, 2, WAIT_FOREVER);
@@ -21,7 +20,7 @@ void motor2() {
 			
 			//Rotate tool 2 one full rotation.
 			
-			char dir = (motor2_direction==CLOCKWISE) ? M2_DIR : 0x00;
+			dir = (motor2_direction==COUNTERCLOCKWISE) ? M2_DIR : 0x00;
 			
 			for (counter_motor2_steps=0; counter_motor2_steps<FULL_ROTATION_STEPS; counter_motor2_steps++) {
 				sysOutByte(0x181,M1_INHIB|M2_STEP|M2_HFM|dir);
@@ -35,7 +34,7 @@ void motor2() {
 			
 			//Rotate tool 1 one half rotation.
 			
-			char dir = (motor2_direction==CLOCKWISE) ? M2_DIR : 0x00;
+			dir = (motor2_direction==COUNTERCLOCKWISE) ? M2_DIR : 0x00;
 			
 			for (counter_motor2_steps=0; counter_motor2_steps<HALF_ROTATION_STEPS; counter_motor2_steps++) {
 				sysOutByte(0x181,M1_INHIB|M2_STEP|M2_HFM|dir);

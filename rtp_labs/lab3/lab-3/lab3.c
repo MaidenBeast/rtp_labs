@@ -20,6 +20,8 @@ void stop() {
 	if (fan_PID!=0) taskDelete(fan_PID);
 
 	if (lab3_PID!=0) taskDelete(lab3_PID);
+	
+	sysOutByte(0x181, M2_INHIB|M1_INHIB);
 }
 
 void changeRunningMode(running_mode_t mode) {
