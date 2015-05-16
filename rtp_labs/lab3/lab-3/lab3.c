@@ -12,7 +12,6 @@ void stop() {
 	if (m2MsgQId!=0) msgQDelete(m2MsgQId);
 
 	if (semMotors!=0) semDelete(semMotors);
-	if (semMotor2!=0) semDelete(semMotor2);
 
 	if (motor1_PID!=0) taskDelete(motor1_PID);
 	if (motor1_PID!=0) taskDelete(motor2_PID);
@@ -74,7 +73,6 @@ void lab3() {
 				motor2_PID = taskSpawn("motor2", 200, 0, 1000, motor2);
 
 				semMotors = semBCreate(SEM_Q_PRIORITY, SEM_FULL);
-				semMotor2 = semBCreate(SEM_Q_PRIORITY, SEM_FULL);
 
 				m1MsgQId = msgQCreate(10, 2, MSG_Q_FIFO);
 				m2MsgQId = msgQCreate(10, 2, MSG_Q_FIFO);
