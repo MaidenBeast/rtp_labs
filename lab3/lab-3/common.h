@@ -56,8 +56,7 @@ MSG_Q_ID m2MsgQId;			//message queue used by motor2 task
 
 
 /* 		  semaphores			*/
-SEM_ID semMotor1;			//binary semaphore about the usage of motor1 (0 if busy/working, 1 if free/not working)
-SEM_ID semMotor2;			//binary semaphore about the usage of motor2 (0 if busy/working, 1 if free/not working)
+SEM_ID semMotors;			//binary semaphore about the usage of motors (0 if busy/working, 1 if free/not working)
 
 /*			tasks				*/
 int motor1_PID;
