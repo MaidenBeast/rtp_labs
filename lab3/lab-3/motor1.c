@@ -1,11 +1,9 @@
 #include "common.h"
 #include "fan.h"
 #include "lamp.h"
+#include "motor1.h"
 
 void motor1() {
-	motor_direction_t motor1_direction;
-	motor_speed_t motor1_speed;
-
 	int counter_motor1_steps;		//48 full-steps per rotation
 
 	motor1_direction = CLOCKWISE;
@@ -21,7 +19,7 @@ void motor1() {
 			
 			//Rotate tool 1 one full rotation.
 			
-			char dir = (motor1_direction==CLOCKWISE) ? M2_DIR : 0x00;
+			char dir = (motor1_direction==COUNTERCLOCKWISE) ? M1_DIR : 0x00;
 
 			for (counter_motor1_steps=0; counter_motor1_steps<FULL_ROTATION_STEPS; counter_motor1_steps++) {
 				sysOutByte(0x181,M2_INHIB|M1_STEP|M1_HFM|dir);
@@ -35,7 +33,7 @@ void motor1() {
 			
 			//Rotate tool 1 one half rotation.
 			
-			char dir = (motor1_direction==CLOCKWISE) ? M2_DIR : 0x00;
+			char dir = (motor1_direction==COUNTERCLOCKWISE) ? M1_DIR : 0x00;
 
 			for (counter_motor1_steps=0; counter_motor1_steps<HALF_ROTATION_STEPS; counter_motor1_steps++) {
 				sysOutByte(0x181,M2_INHIB|M1_STEP|M1_HFM|dir);
