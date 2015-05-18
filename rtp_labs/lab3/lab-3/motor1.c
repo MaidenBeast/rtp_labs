@@ -2,8 +2,10 @@
 #include "fan.h"
 #include "lamp.h"
 #include "motor1.h"
+#include "motor2.h"
 
 void motor1() {
+	motor1_waiting = 0;
 
 	motor1_direction = CLOCKWISE;
 	motor1_speed = LOW_SPEED;
@@ -35,19 +37,30 @@ void rotateMotor1(int n_rotations) {
 	//Rotate tool 1 one full rotation.
 	char dir = (motor1_direction==COUNTERCLOCKWISE) ? M1_DIR : 0x00;
 
+	motor1_waiting = 1;
+
+	semTake(semMotors, WAIT_FOREVER);
+
 	changeLampMode(MACHINE_WORKING);
 	changeFanMode(FAN_ONE_HUNDRED_PERCENT);
-	
-	semTake(semMotors, WAIT_FOREVER);
+
 	for (counter_motor1_steps=0; counter_motor1_steps<n_rotations; counter_motor1_steps++) {
-		sysOutByte(0x181,M2_INHIB|M1_STEP|M1_HFM|dir);
+		sysOutByte(0x181,M1_STEP|M1_HFM|dir);
 		taskDelay(5);
-		sysOutByte(0x181,M2_INHIB|dir);
+		sysOutByte(0x181,dir);
 		taskDelay(ticks_interval-5);
 	}
-	taskDelay(1000);
-	semGive(semMotors);
+	
+	sysOutByte(0x181, 0x00);
+
+	if (motor2_waiting) {
+		taskDelay(1000);
+	}
 
 	changeLampMode(MACHINE_NOT_WORKING);
 	changeFanMode(FAN_FIFTY_PERCENT);
+
+	semGive(semMotors);
+
+	motor1_waiting = 0;
 }

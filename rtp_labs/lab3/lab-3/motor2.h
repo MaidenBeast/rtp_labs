@@ -9,4 +9,6 @@ motor_speed_t motor2_speed;
 
 int counter_motor2_steps;		//48 full-steps per rotation
 
+int motor2_waiting;				//boolean value
+
 #endif
