@@ -21,8 +21,8 @@ void stop() {
 
 	if (lab3_PID!=0) taskDelete(lab3_PID);
 
-	sysOutByte(0x181, M2_INHIB);
-	sysOutByte(0x181, M1_INHIB);
+	//sysOutByte(0x181, M2_INHIB);
+	sysOutByte(0x181, M1_INHIB|M2_INHIB);
 }
 
 void changeRunningMode(running_mode_t mode) {
