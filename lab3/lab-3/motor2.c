@@ -52,6 +52,8 @@ void rotateMotor2(int n_rotations) {
 		sysOutByte(0x181,dir);
 		taskDelay(ticks_interval-5);
 	}
+	
+	sysOutByte(0x181, 0x00);
 
 	if (motor1_waiting) {
 		taskDelay(1000);
@@ -59,8 +61,9 @@ void rotateMotor2(int n_rotations) {
 
 	changeLampMode(MACHINE_NOT_WORKING);
 	changeFanMode(FAN_FIFTY_PERCENT);
+	
+	motor2_waiting = 0;
 
 	semGive(semMotors);
 
-	motor2_waiting = 0;
 }

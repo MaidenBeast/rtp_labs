@@ -59,8 +59,9 @@ void rotateMotor1(int n_rotations) {
 
 	changeLampMode(MACHINE_NOT_WORKING);
 	changeFanMode(FAN_FIFTY_PERCENT);
+	
+	motor1_waiting = 0;
 
 	semGive(semMotors);
 
-	motor1_waiting = 0;
 }
