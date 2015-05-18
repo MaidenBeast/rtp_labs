@@ -8,6 +8,11 @@ int input;
 int previousInput;
 
 void stop() {
+	changeLampMode(LAMP_OFF);	//turn of the lamp
+	changeFanMode(FAN_OFF);		//turn off the fan
+
+	taskDelay(100);
+
 	if (m1MsgQId!=0) msgQDelete(m1MsgQId);
 	if (m2MsgQId!=0) msgQDelete(m2MsgQId);
 
@@ -19,10 +24,11 @@ void stop() {
 	if (lamp_PID!=0) taskDelete(lamp_PID);
 	if (fan_PID!=0) taskDelete(fan_PID);
 
+	sysOutByte(0x181, M2_INHIB|M1_INHIB);
+	taskDelay(5);
+
 	if (lab3_PID!=0) taskDelete(lab3_PID);
 
-	taskDelay(100);
-	sysOutByte(0x181, M2_INHIB|M1_INHIB);
 }
 
 void changeRunningMode(running_mode_t mode) {
@@ -75,7 +81,7 @@ void lab3() {
 
 				m1MsgQId = msgQCreate(10, 2, MSG_Q_FIFO);
 				m2MsgQId = msgQCreate(10, 2, MSG_Q_FIFO);
-				
+
 				sysOutByte(0x181, 0x00);
 
 				break;
@@ -127,7 +133,7 @@ void lab3() {
 				changeLampMode(LAMP_CONFIG);
 
 				sysOutByte(0x181,M2_INHIB|M1_INHIB);
-				
+
 				break;
 			default: 	//RUN
 				taskDelay(100);
@@ -149,8 +155,6 @@ void lab3() {
 					//TODO: Stop the motors at the next safe position
 					//sysOutByte(0x181, M2_INHIB|M1_INHIB);
 					//taskDelay(5);
-					changeLampMode(LAMP_OFF);	//turn of the lamp
-					changeFanMode(FAN_OFF);		//turn off the fan
 					stop();				//shutdown all processes
 					break;
 				case 15: //F: Emergency stop.
