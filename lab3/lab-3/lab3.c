@@ -21,8 +21,8 @@ void stop() {
 
 	if (lab3_PID!=0) taskDelete(lab3_PID);
 
-	//sysOutByte(0x181, M2_INHIB);
-	sysOutByte(0x181, M1_INHIB|M2_INHIB);
+	taskDelay(100);
+	sysOutByte(0x181, M2_INHIB|M1_INHIB);
 }
 
 void changeRunningMode(running_mode_t mode) {
@@ -47,13 +47,12 @@ void lab3() {
 	fan_PID = taskSpawn("fan", 201, 0, 1000, fan);
 
 	sysOutByte(0x184, 0xFF); //taking control of fan and lamp ports
+	sysOutByte(0x181,M1_INHIB|M2_INHIB);
 
 	while (1) {
 
 		switch (running_mode) {
 		case CONFIG:
-
-			sysOutByte(0x181,M1_INHIB|M2_INHIB);
 
 			do { //reads from keyboard matrix until the user digit something on the keyboard
 				previousInput = input;
@@ -70,17 +69,17 @@ void lab3() {
 				changeLampMode(MACHINE_NOT_WORKING);
 
 				motor1_PID = taskSpawn("motor1", 200, 0, 1000, motor1);
-				motor2_PID = taskSpawn("motor2", 200, 0, 1000, motor2);
+				motor2_PID = taskSpawn("motor2", 201, 0, 1000, motor2);
 
 				semMotors = semBCreate(SEM_Q_PRIORITY, SEM_FULL);
 
 				m1MsgQId = msgQCreate(10, 2, MSG_Q_FIFO);
 				m2MsgQId = msgQCreate(10, 2, MSG_Q_FIFO);
+				
+				sysOutByte(0x181, 0x00);
 
 				break;
 			case 1:
-				//TODO: Let motor 1 advance one half-step. Turning off power immediately after.
-
 				sysOutByte(0x181,M2_INHIB|M1_STEP);
 				taskDelay(25);
 				sysOutByte(0x181,M2_INHIB);
@@ -88,10 +87,7 @@ void lab3() {
 				sysOutByte(0x181,M1_INHIB|M2_INHIB);
 				taskDelay(50);
 				break;
-
 			case 2:
-				//TODO: Let motor 2 advance one half-step. Turning off power immediately after.
-
 				sysOutByte(0x181,M1_INHIB|M2_STEP);
 				taskDelay(25);
 				sysOutByte(0x181,M1_INHIB);
@@ -103,8 +99,6 @@ void lab3() {
 			break;
 			case ERR:
 				taskDelay(100);
-
-				sysOutByte(0x181,M1_INHIB|M2_INHIB);
 
 				//input = -1;
 
@@ -132,6 +126,8 @@ void lab3() {
 				changeFanMode(FAN_OFF);
 				changeLampMode(LAMP_CONFIG);
 
+				sysOutByte(0x181,M2_INHIB|M1_INHIB);
+				
 				break;
 			default: 	//RUN
 				taskDelay(100);
@@ -151,13 +147,15 @@ void lab3() {
 				switch (input) {
 				case 0:
 					//TODO: Stop the motors at the next safe position
-					//TODO: Release the power to the engines		
+					//sysOutByte(0x181, M2_INHIB|M1_INHIB);
+					//taskDelay(5);
 					changeLampMode(LAMP_OFF);	//turn of the lamp
 					changeFanMode(FAN_OFF);		//turn off the fan
 					stop();				//shutdown all processes
 					break;
 				case 15: //F: Emergency stop.
-					//TODO: Immediately stop all the stepping of the engines
+					sysOutByte(0x181,M2_INHIB|M1_INHIB);
+					taskDelay(5);
 					changeFanMode(FAN_OFF);		//turns off the fan
 					changeLampMode(LAMP_OFF);	//turns off the lamp
 					changeRunningMode(ERR); //and enter error mode

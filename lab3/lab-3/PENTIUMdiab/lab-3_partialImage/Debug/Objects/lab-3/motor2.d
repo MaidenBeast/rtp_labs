@@ -60,7 +60,8 @@ lab-3_partialImage/Debug/Objects/lab-3/motor2.o: \
   C:/windriver/workspace/lab-3/machine-utils.h \
   C:/windriver/workspace/lab-3/fan.h \
   C:/windriver/workspace/lab-3/lamp.h \
-  C:/windriver/workspace/lab-3/motor2.h
+  C:/windriver/workspace/lab-3/motor2.h \
+  C:/windriver/workspace/lab-3/motor1.h
 
 C:/windriver/workspace/lab-3/common.h:
 
@@ -183,4 +184,6 @@ C:/windriver/workspace/lab-3/fan.h:
 C:/windriver/workspace/lab-3/lamp.h:
 
 C:/windriver/workspace/lab-3/motor2.h:
+
+C:/windriver/workspace/lab-3/motor1.h:
 
