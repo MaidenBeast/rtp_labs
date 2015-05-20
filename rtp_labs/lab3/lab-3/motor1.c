@@ -44,12 +44,26 @@ void rotateMotor1(int n_rotations) {
 	changeLampMode(MACHINE_WORKING);
 	changeFanMode(FAN_ONE_HUNDRED_PERCENT);
 
-	for (counter_motor1_steps=0; counter_motor1_steps<n_rotations; counter_motor1_steps++) {
+	counter_motor1_steps = n_rotations;
+	
+	while (counter_motor1_steps > 0) {
+		semTake(semCounterMotor1, WAIT_FOREVER);
+		
 		sysOutByte(0x181,M1_STEP|M1_HFM|dir);
 		taskDelay(5);
 		sysOutByte(0x181,dir);
 		taskDelay(ticks_interval-5);
+		counter_motor1_steps--;
+		
+		semGive(semCounterMotor1);
 	}
+	
+	/*for (counter_motor1_steps=0; counter_motor1_steps<n_rotations; counter_motor1_steps++) {
+		sysOutByte(0x181,M1_STEP|M1_HFM|dir);
+		taskDelay(5);
+		sysOutByte(0x181,dir);
+		taskDelay(ticks_interval-5);
+	}*/
 	
 	sysOutByte(0x181, 0x00);
 

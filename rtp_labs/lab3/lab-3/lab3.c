@@ -53,7 +53,7 @@ void lab3() {
 	fan_PID = taskSpawn("fan", 201, 0, 1000, fan);
 
 	sysOutByte(0x184, 0xFF); //taking control of fan and lamp ports
-	sysOutByte(0x181,M1_INHIB|M2_INHIB);
+	sysOutByte(0x181, M1_INHIB|M2_INHIB);
 
 	while (1) {
 
@@ -75,9 +75,11 @@ void lab3() {
 				changeLampMode(MACHINE_NOT_WORKING);
 
 				motor1_PID = taskSpawn("motor1", 200, 0, 1000, motor1);
-				motor2_PID = taskSpawn("motor2", 201, 0, 1000, motor2);
+				motor2_PID = taskSpawn("motor2", 200, 0, 1000, motor2);
 
 				semMotors = semBCreate(SEM_Q_PRIORITY, SEM_FULL);
+				semCounterMotor1 = semBCreate(SEM_Q_FIFO, SEM_FULL);
+				semCounterMotor2 = semBCreate(SEM_Q_FIFO, SEM_FULL);
 
 				m1MsgQId = msgQCreate(10, 2, MSG_Q_FIFO);
 				m2MsgQId = msgQCreate(10, 2, MSG_Q_FIFO);
@@ -153,8 +155,24 @@ void lab3() {
 				switch (input) {
 				case 0:
 					//TODO: Stop the motors at the next safe position
+					semTake(semCounterMotor1, WAIT_FOREVER);
+					if (counter_motor1_steps > 0) {
+						int newCounter = counter_motor1_steps % QUARTER_ROTATION_STEPS;
+						counter_motor1_steps = newCounter;
+					}
+					semGive(semCounterMotor1);
+
+					semTake(semCounterMotor2, WAIT_FOREVER);
+					if (counter_motor2_steps > 0) {
+						int newCounter = counter_motor2_steps % QUARTER_ROTATION_STEPS;
+						counter_motor2_steps = newCounter;
+					}
+					semGive(semCounterMotor2);
+
 					//sysOutByte(0x181, M2_INHIB|M1_INHIB);
 					//taskDelay(5);
+
+					semTake(semMotors, WAIT_FOREVER);
 					stop();				//shutdown all processes
 					break;
 				case 15: //F: Emergency stop.
@@ -168,6 +186,14 @@ void lab3() {
 					sprintf(msg, "%1x", input);
 
 					if ((input>= 1 && input<= 3) || input == 10) {
+						//TODO: stop the motor 2 at the next safe position
+						semTake(semCounterMotor2, WAIT_FOREVER);
+						if (counter_motor2_steps > 0) {
+							int newCounter = counter_motor2_steps % QUARTER_ROTATION_STEPS;
+							counter_motor2_steps = newCounter;
+						}
+						semGive(semCounterMotor2);
+
 						msgQSend(m1MsgQId, msg, 2, WAIT_FOREVER, MSG_PRI_NORMAL); //send the input to motor1 message queue
 					}
 					if ((input>= 4 && input<= 6) || input == 11) {

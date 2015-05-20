@@ -6,7 +6,7 @@
 
 void motor2() {
 	motor2_waiting = 0;
-	
+
 	int counter_motor2_steps;		//48 full-steps per rotation
 
 	motor2_direction = CLOCKWISE;
@@ -45,14 +45,28 @@ void rotateMotor2(int n_rotations) {
 
 	changeLampMode(MACHINE_WORKING);
 	changeFanMode(FAN_ONE_HUNDRED_PERCENT);
+	
+	counter_motor2_steps = n_rotations;
 
-	for (counter_motor2_steps=0; counter_motor2_steps<n_rotations; counter_motor2_steps++) {
+	while (counter_motor2_steps > 0) {
+		semTake(semCounterMotor2, WAIT_FOREVER);
+
 		sysOutByte(0x181,M2_STEP|M2_HFM|dir);
 		taskDelay(5);
 		sysOutByte(0x181,dir);
 		taskDelay(ticks_interval-5);
+		counter_motor2_steps--;
+		
+		semGive(semCounterMotor2);
 	}
-	
+
+	/*for (counter_motor2_steps=0; counter_motor2_steps<n_rotations; counter_motor2_steps++) {
+		sysOutByte(0x181,M2_STEP|M2_HFM|dir);
+		taskDelay(5);
+		sysOutByte(0x181,dir);
+		taskDelay(ticks_interval-5);
+	}*/
+
 	sysOutByte(0x181, 0x00);
 
 	if (motor1_waiting) {
@@ -61,7 +75,7 @@ void rotateMotor2(int n_rotations) {
 
 	changeLampMode(MACHINE_NOT_WORKING);
 	changeFanMode(FAN_FIFTY_PERCENT);
-	
+
 	motor2_waiting = 0;
 
 	semGive(semMotors);

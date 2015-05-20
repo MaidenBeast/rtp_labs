@@ -47,8 +47,9 @@ typedef enum {
 	LOW_SPEED		//10 steps per second
 } motor_speed_t;
 
-#define FULL_ROTATION_STEPS 48
-#define HALF_ROTATION_STEPS 24
+#define FULL_ROTATION_STEPS 	48
+#define HALF_ROTATION_STEPS 	24
+#define QUARTER_ROTATION_STEPS 	12
 
 /* 		message queues 		*/
 MSG_Q_ID m1MsgQId;			//message queue used by motor1 task
@@ -57,6 +58,8 @@ MSG_Q_ID m2MsgQId;			//message queue used by motor2 task
 
 /* 		  semaphores			*/
 SEM_ID semMotors;			//binary semaphore about the usage of motors (0 if busy/working, 1 if free/not working)
+SEM_ID semCounterMotor1;
+SEM_ID semCounterMotor2;
 
 /*			tasks				*/
 int motor1_PID;
