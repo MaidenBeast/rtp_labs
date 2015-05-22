@@ -37,7 +37,7 @@ void lamp() {
 			}
 			taskDelay(10);
 			break;
-		case LAMP_CONFIG:
+		case LAMP_CONFIG:	//saw-teeth PWM
 			shineLamp(20000, lamp_intensity); //shine interval for 20ms (2 seconds / 100)
 			lamp_counter++;
 			lamp_intensity = (lamp_counter)%100;
@@ -57,8 +57,8 @@ void lamp() {
 			shineLamp(20000, lamp_intensity); //shine interval for 20ms (2 seconds / 100)
 			lamp_counter++;
 			lamp_intensity = (lamp_counter)%200;
-			if (lamp_intensity>100) {
-				lamp_intensity = 200 - lamp_intensity;
+			if (lamp_intensity>100) {	//if the peak has been reached
+				lamp_intensity = 200 - lamp_intensity;	//descending PWM
 			}
 			taskDelay(1);
 			break;
@@ -66,16 +66,17 @@ void lamp() {
 			sysOutByte(0x182, (fan_state) ? FAN_FLAG|LAMP_FLAG : LAMP_FLAG); //turn on the lamp
 			lamp_state = 1;
 			//delayMsec(1000);
-			taskDelay(1000);
+			taskDelay(1000);	//delay for one second
 			sysOutByte(0x182, (fan_state) ? FAN_FLAG : 0x00);	//turn off the lamp
 			lamp_state = 0;
 			//delayMsec(1000);
-			taskDelay(1000);
+			taskDelay(1000);	//delay for one more second
 			break;
 		}
 	}
 }
 
+//START TEST FUNCTION
 void start_test_lamp() {
 	sysClkRateSet(1000);
 	kernelTimeSlice(10);
@@ -84,6 +85,7 @@ void start_test_lamp() {
 	lamp_PID = taskSpawn("lamp", 200, 0, 1000, lamp);
 }
 
+//STOP TEST FUNCTION
 void stop_test_lamp() {
 	taskDelete(lamp_PID);
 }
