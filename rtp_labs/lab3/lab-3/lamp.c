@@ -53,7 +53,7 @@ void lamp() {
 			//delayMsec(166);
 			taskDelay(166);
 			break;
-		case MACHINE_NOT_WORKING:
+		case MACHINE_NOT_WORKING:	//triangle PWM
 			shineLamp(20000, lamp_intensity); //shine interval for 20ms (2 seconds / 100)
 			lamp_counter++;
 			lamp_intensity = (lamp_counter)%200;

@@ -28,7 +28,7 @@ typedef enum {
 typedef enum {
 	FAN_OFF,
 	FAN_ONE_HUNDRED_PERCENT, 		//"When the machines are operating, the fan should be working at 100%, ..."
-	FAN_FIFTY_PERCENT				//"...otherwise the fan hould be working at 50%"
+	FAN_FIFTY_PERCENT				//"...otherwise the fan should be working at 50%"
 } fan_mode_t;
 
 /*		lamp and fan states		*/
